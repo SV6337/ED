@@ -3,9 +3,12 @@ import pyttsx3
 import os
 from dotenv import load_dotenv
 
+# Load environment variables
 load_dotenv()
-
-client = Groq(api_key=os.getenv("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"))
+# Replace hardcoded API key with environment variable
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+# Initialize Groq client
+client = Groq(api_key=GROQ_API_KEY)
 
 base_prompt = """
 Act as an interviewer for a {job_type} interview. Your job is to ask interview questions one by one related to the job type and evaluate the candidate's answers.

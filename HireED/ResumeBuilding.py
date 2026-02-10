@@ -6,8 +6,11 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# Replace hardcoded API key with environment variable
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
 # Initialize Groq client with your API key
-client = Groq(api_key=os.getenv("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"))
+client = Groq(api_key=GROQ_API_KEY)
 
 # Interview Prompt Template
 base_prompt = """

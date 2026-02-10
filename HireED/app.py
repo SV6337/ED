@@ -13,13 +13,21 @@ from pymongo import MongoClient
 # Load environment variables
 load_dotenv()
 
+# Fetch MongoDB URI from .env
+MONGO_URI = os.getenv("MONGO_URI")
+
+# Debugging: Print the loaded MongoDB URI
+print(f"Loaded MONGO_URI: {MONGO_URI}")
+
+# Initialize MongoDB Atlas connection
+mongo_client = MongoClient(MONGO_URI) if MONGO_URI else None
+
 app = Flask(__name__)
 # ✅ Allow only your front-end origin to avoid multiple-value CORS errors
 CORS(app)
 
 # ---------------- MongoDB Atlas (Chat Logs) ----------------
-MONGO_ATLAS_URI = os.getenv("MONGO_ATLAS_URI")
-MONGO_URI = os.getenv("MONGO_URI")
+# MongoDB Atlas connection
 mongo_client = None
 chat_collection = None
 mongo_error_message = ""
@@ -29,8 +37,6 @@ def init_mongo_connection():
     global mongo_client, chat_collection, mongo_error_message, mongo_connected_uri
 
     mongo_candidates = []
-    if MONGO_ATLAS_URI:
-        mongo_candidates.append(MONGO_ATLAS_URI)
     if MONGO_URI and MONGO_URI not in mongo_candidates:
         mongo_candidates.append(MONGO_URI)
     mongo_candidates.append("mongodb://localhost:27017/edvantage")
@@ -70,7 +76,7 @@ def mongo_status():
     })
 
 # Initialize Groq client
-client = Groq(api_key=os.getenv("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"))
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 # ---------------- Structured Prompts (CRITICAL FIX) ----------------
 INTERVIEW_PROMPT = """

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "concurrently \"node server.js\" \"cd ../HireED && python app.py\""
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

@@ -8,9 +8,12 @@ import json # Used for safer parsing
 # Load environment variables
 load_dotenv()
 
+# Replace hardcoded API key with environment variable
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
 # Initialize Groq client
 # Use os.getenv() to securely load the API key
-client = Groq(api_key=os.getenv("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"))
+client = Groq(api_key=GROQ_API_KEY)
 
 APTITUDE_CATEGORIES = {
     "quantitative": ["Percentage calculations", "Time and work problems", "Profit and loss", "Algebra", "Geometry"],
