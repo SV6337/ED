@@ -20,14 +20,14 @@ app.use(express.json());
 // Serve static frontend files
 app.use(express.static(path.join(__dirname)));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Serve static files from the HireED directory
+app.use('/HireED', express.static(path.join(__dirname, '../HireED')));
 // Serve index at root for convenience
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // MongoDB Connection
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/edvantage';
-mongoose.connect(MONGO_URI);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
