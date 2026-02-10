@@ -11,23 +11,20 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Replace localhost with the EC2 public IP
-const FRONTEND_URL = 'http://65.0.105.4';
-
 // Middleware
-app.use(cors({ origin: FRONTEND_URL }));
+app.use(cors());
 app.use(express.json());
 // Serve static frontend files
 app.use(express.static(path.join(__dirname)));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-// Serve static files from the HireED directory
-app.use('/HireED', express.static(path.join(__dirname, '../HireED')));
 // Serve index at root for convenience
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // MongoDB Connection
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/edvantage';
+mongoose.connect(MONGO_URI);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -1400,7 +1397,6 @@ app.get('/leave-requests', async (req, res) => {
 // Conventional: update leave status via PUT
 app.put('/leave-requests/:id', async (req, res) => {
     try {
-        console.log('PUT /leave-requests/:id - Received payload:', { id, status });
         console.log('Received PUT request to update leave request:', req.body);
         const { id } = req.params;
         const { status } = req.body;
