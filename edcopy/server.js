@@ -1830,20 +1830,6 @@ app.post('/test-data', async (req, res) => {
     res.send('Test record added');
 });
 
-const { createProxyMiddleware } = require('http-proxy-middleware');
-
-// Proxy API requests to the HireED backend
-app.use(
-    '/api/hireed',
-    createProxyMiddleware({
-        target: 'http://localhost:5001', // HireED backend
-        changeOrigin: true,
-        pathRewrite: {
-            '^/api/hireed': '', // Remove '/api/hireed' prefix when forwarding
-        },
-    })
-);
-
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
