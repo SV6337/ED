@@ -26,6 +26,10 @@ mongo_client = MongoClient(MONGO_URI) if MONGO_URI else None
 app = Flask(__name__, static_folder='HireED', static_url_path='/')
 CORS(app)  # Enable CORS for all routes
 
+# Enable CORS for the Flask app
+CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "http://65.0.105.4:5000"}})
+
 # ---------------- MongoDB Atlas (Chat Logs) ----------------
 # MongoDB Atlas connection
 mongo_client = None
