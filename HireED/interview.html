@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interview Preparation - HireED</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            /* Light Mode Colors - Matching admin_dashboard.html */
+            --primary: #008080;
+            --primary-light: #83c5be;
+            --primary-dark: #004e5a;
+            --secondary: #3a506b;
+            --accent: #ff9e7d;
+            --light: #f8f9fa;
+            --dark: #2b2d42;
+            --gray: #e9ecef;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --card-bg: #ffffff;
+            --text-primary: #2b2d42;
+            --text-secondary: #4a4e69;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            
+            /* Dark Mode Colors */
+            --dark-primary: #008080;
+            --dark-primary-light: #006d77;
+            --dark-primary-dark: #004e5a;
+            --dark-secondary: #b8c2cc;
+            --dark-accent: #ff9e7d;
+            --dark-light: #121212;
+            --dark-dark: #e0e0e0;
+            --dark-gray: #1e1e1e;
+            --dark-card-bg: #1e1e1e;
+            --dark-text-primary: #e0e0e0;
+            --dark-text-secondary: #b8c2cc;
+            --dark-border-color: rgba(255, 255, 255, 0.08);
+            --dark-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            
+            /* Shared Variables */
+            --border-radius: 12px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        body.dark {
+            --primary: var(--dark-primary);
+            --primary-light: var(--dark-primary-light);
+            --primary-dark: var(--dark-primary-dark);
+            --secondary: var(--dark-secondary);
+            --accent: var(--dark-accent);
+            --light: var(--dark-light);
+            --dark: var(--dark-dark);
+            --gray: var(--dark-gray);
+            --card-bg: var(--dark-card-bg);
+            --text-primary: var(--dark-text-primary);
+            --text-secondary: var(--dark-text-secondary);
+            --border-color: var(--dark-border-color);
+            --card-shadow: var(--dark-card-shadow);
+        }
+        
+        /* Theme Toggle Switch */
+        .theme-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+        }
+        
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-color);
+        }
+        
+        .toggle-container:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-icon {
+            font-size: 1.4rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        body.dark .toggle-icon {
+            color: var(--accent);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(180deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+        }
+        
+        .logo h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 5px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-weight: 500;
+            display: block;
+        }
+        
+        nav ul li a:hover,
+        nav ul li a.active {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        /* Main Content */
+        main {
+            flex: 1;
+        }
+        
+        .page-header {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .main-content {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-title {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 18px 20px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+        }
+        
+        .sidebar-content {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+            width : 100%;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .form-control {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition);
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 109, 119, 0.1);
+        }
+        
+        /* Button Styles */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-decoration: none;
+            font-size: 0.95rem;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: none;
+        }
+        
+        .btn-outline:hover:not(:disabled) {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 18px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .chat-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        
+        .chat-messages {
+            padding: 25px;
+            flex: 1;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+        
+        /* Message Styles */
+        .message {
+            margin-bottom: 20px;
+        }
+        
+        .message-bot {
+            display: flex;
+            justify-content: flex-start;
+        }
+        
+        .message-user {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .message-content {
+            max-width: 80%;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            line-height: 1.5;
+        }
+        
+        .bot-message {
+            background-color: rgba(131, 197, 190, 0.15);
+            border-left: 4px solid var(--primary);
+            color: var(--text-primary);
+        }
+        
+        .bot-message.score {
+            background-color: rgba(76, 175, 80, 0.15);
+            border-left: 4px solid var(--success);
+        }
+        
+        .user-message {
+            background-color: rgba(0, 128, 128, 0.15);
+            border-right: 4px solid var(--primary);
+            color: var(--text-primary);
+        }
+        
+        /* Interview Question Area */
+        .interview-question-box {
+            background-color: rgba(131, 197, 190, 0.1);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 25px;
+            margin: 0;
+        }
+        
+        .question-label {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        #next-question-text {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 0;
+            min-height: 24px;
+        }
+        
+        /* Chat Input Area */
+        .chat-input {
+            border-top: 1px solid var(--border-color);
+            padding: 20px;
+            background-color: var(--card-bg);
+        }
+        
+        .chat-input textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            resize: vertical;
+            transition: var(--transition);
+        }
+        
+        .chat-input textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 109, 119, 0.1);
+        }
+        
+        .chat-input textarea:disabled {
+            background-color: rgba(233, 236, 239, 0.3);
+            cursor: not-allowed;
+        }
+        
+        .chat-input button {
+            width: 100%;
+            margin-top: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .chat-input button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .chat-input button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Speech Toggle Button */
+        #toggleSpeech {
+            position: fixed;
+            bottom: 20px;
+            right: 90px;
+            padding: 10px 15px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        #toggleSpeech:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-column p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .chat-messages {
+                max-height: 300px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li a {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .page-header p {
+                font-size: 1rem;
+            }
+            
+            .message-content {
+                max-width: 90%;
+            }
+            
+            #toggleSpeech {
+                bottom: 20px;
+                right: 20px;
+                font-size: 0.9rem;
+                padding: 8px 12px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .chat-header h2 {
+                font-size: 1.2rem;
+            }
+            
+            .question-label {
+                font-size: 0.8rem;
+            }
+            
+            #next-question-text {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Animation for theme toggle */
+        @keyframes themeChange {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+        
+        .toggle-container.theme-changed {
+            animation: themeChange 0.6s ease;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-user-tie"></i>
+                <h1>HireED</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="interview.html" class="active">Interview Prep</a></li>
+                    <li><a href="resume.html">Resume Builder</a></li>
+                    <li><a href="coding.html">Coding Practice</a></li>
+                    <li><a href="dsa.html">DSA Practice</a></li>
+                    <li><a href="debugging.html">Debugging</a></li>
+                    <li><a href="aptitude.html">Aptitude Tests</a></li>
+                     <li><a href="mocktest.html">Mock Test</a></li>
+                    <li><a href="analytics.html">Analytics</a></li>
+                    <li><a href="chat-history.html">Chat History</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-microphone"></i> Interview Preparation</h1>
+            <p>Practice with AI-powered interviews tailored to your target job position.</p>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="sidebar-title">
+                    <i class="fas fa-cog"></i>
+                    <span>Interview Settings</span>
+                </div>
+                
+                <div class="sidebar-content">
+                    <div class="form-group">
+                        <label for="job-type">Job Position</label>
+                        <input type="text" id="job-type" class="form-control" placeholder="e.g., Software Engineer, Data Analyst" />
+                    </div>
+                    <button id="start-interview" class="btn btn-primary">
+                        <i class="fas fa-play"></i> Start Interview
+                    </button>
+                    <button id="end-interview" class="btn btn-outline">
+                        <i class="fas fa-stop"></i> End Interview
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-header">
+                    <i class="fas fa-comments"></i>
+                    <h2 id="chat-title">Interview Assistant</h2>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message message-bot">
+                        <div class="message-content bot-message">
+                            Welcome to HireED! Please select a job position and start your interview session.
+                        </div>
+                    </div>
+                </div>
+
+                <div id="interview-question-area" class="interview-question-box">
+                    <h4 class="question-label">Current Question:</h4>
+                    <p id="next-question-text" style="font-weight: 500;">Click "Start Interview" to begin!</p>
+                </div>
+                
+                <div class="chat-input">
+                    <textarea id="user-input" placeholder="Type your answer here..." disabled rows="3"></textarea>
+                    <button id="send-btn" disabled>
+                        <i class="fas fa-paper-plane"></i> Send
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>HireED</h3>
+                    <p>Your AI-powered career preparation assistant helping you land your dream job.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="interview.html">Interview Preparation</a></li>
+                        <li><a href="resume.html">Resume Builder</a></li>
+                        <li><a href="coding.html">Coding Practice</a></li>
+                        <li><a href="debugging.html">Debugging</a></li>
+                        <li><a href="aptitude.html">Aptitude Test</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:support@hired.com">support@hired.com</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 HireED. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="themeToggle">
+        <div class="toggle-container">
+            <i class="fas fa-adjust toggle-icon"></i>
+        </div>
+    </div>
+
+    <script src="context.js"></script>
+    <script>
+// Interview page JavaScript
+
+// Chat functionality
+const chatMessages = document.getElementById('chat-messages');
+const userInput = document.getElementById('user-input');
+const sendBtn = document.getElementById('send-btn');
+const startInterviewBtn = document.getElementById('start-interview');
+const endInterviewBtn = document.getElementById('end-interview');
+
+const urlParams = new URLSearchParams(window.location.search);
+const urlStudentId = urlParams.get('studentId');
+const urlStudentName = urlParams.get('studentName');
+if (urlStudentId) localStorage.setItem('studentId', urlStudentId);
+if (urlStudentName) localStorage.setItem('studentName', urlStudentName);
+
+const CHAT_API_BASE = 'http://localhost:5001';
+const chatFeature = 'interview';
+const studentId = localStorage.getItem('studentId') || 'anonymous';
+const studentName = localStorage.getItem('studentName') || localStorage.getItem('userName') || '';
+const chatSessionKey = `hireed_${chatFeature}_session`;
+let chatSessionId = sessionStorage.getItem(chatSessionKey);
+if (!chatSessionId) {
+    chatSessionId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+    sessionStorage.setItem(chatSessionKey, chatSessionId);
+}
+
+function stripHtml(html) {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.textContent || div.innerText || '';
+}
+
+function logChat(role, content, metadata = {}) {
+    const payload = {
+        studentId,
+        studentName,
+        feature: chatFeature,
+        role,
+        message: content,
+        message_text: stripHtml(content),
+        metadata,
+        sessionId: chatSessionId
+    };
+
+    fetch(`${CHAT_API_BASE}/log-chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    }).catch(() => {});
+}
+
+// Elements for the separate question area
+const nextQuestionText = document.getElementById('next-question-text');
+
+let isInterviewActive = false;
+let conversationHistory = [];
+let lastUserAnswer = '';
+
+const EDCOPY_API_BASE = 'http://localhost:5000';
+
+function extractScore(feedbackText) {
+    const match = feedbackText.match(/Score\s*:\s*(\d+(?:\.\d+)?)/i);
+    return match ? Number(match[1]) : null;
+}
+
+function reportInterviewPerformance(feedbackText, questionText) {
+    const score = extractScore(feedbackText || '');
+    const studentId = localStorage.getItem('studentId');
+    if (score === null || !studentId) return;
+
+    const payload = {
+        studentId,
+        studentName: localStorage.getItem('studentName') || localStorage.getItem('userName') || '',
+        feature: 'interview',
+        jobType: document.getElementById('job-type').value.trim(),
+        score,
+        feedback: feedbackText || '',
+        question: questionText || '',
+        answer: lastUserAnswer || ''
+    };
+
+    fetch(`${EDCOPY_API_BASE}/interview-performance`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    }).catch(() => {});
+}
+
+function addMessage(role, content, isScore = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message message-${role === 'user' ? 'user' : 'bot'}`;
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = `message-content ${role === 'user' ? 'user-message' : isScore ? 'bot-message score' : 'bot-message'}`;
+    contentDiv.innerHTML = content;
+
+    messageDiv.appendChild(contentDiv);
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    logChat(role, content, { isScore });
+}
+
+// Function to handle displaying structured interview response
+function displayInterviewResponse(response) {
+    // 1. Display Feedback in the chat area
+    if (response.feedback) {
+        addMessage('bot', response.feedback, response.feedback.includes('Score:'));
+        reportInterviewPerformance(response.feedback, response.next_question || '');
+    }
+
+    // 2. Display the Next Question in the separate container
+    if (response.next_question && nextQuestionText) {
+        nextQuestionText.innerHTML = response.next_question;
+        // Explicitly speak the question, as it's outside the main chat box
+        speak(response.next_question);
+    } else if (nextQuestionText) {
+        // Clear previous question if there isn't a new one
+        nextQuestionText.textContent = 'Awaiting next step...';
+    }
+
+    // 3. Update conversation history
+    conversationHistory = response.conversation_history || [];
+}
+
+async function callBackendAPI(endpoint, data) {
+    try {
+        const response = await fetch(`http://localhost:5001/${endpoint}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            // Error handling to read the JSON error message from the backend
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(`Error calling ${endpoint}:`, error);
+        addMessage('bot', `Error: ${error.message}`);
+        return null;
+    }
+}
+
+// Speech synthesis function
+function speak(text) {
+    if (!ttsEnabled || !('speechSynthesis' in window)) return;
+
+    // If it's speaking and NOT paused, cancel the previous one before starting the new one
+    // This is necessary because new text could trigger a new speak call via the MutationObserver.
+    if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+         window.speechSynthesis.cancel();
+    }
+
+    // If it's already paused, we rely on the button click handler calling resume().
+    if (window.speechSynthesis.paused) return;
+
+    const cleanText = text.replace(/<[^>]*>/g, '');
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.rate = 0.9;
+    window.speechSynthesis.speak(utterance);
+}
+
+// Text-to-speech functionality
+let ttsEnabled = false;
+const ttsToggle = document.createElement('button');
+ttsToggle.id = 'toggleSpeech';
+ttsToggle.innerHTML = '<i class="fas fa-volume-mute"></i> Speech Muted'; // Initial state reflects ttsEnabled = false
+document.body.appendChild(ttsToggle);
+
+// FIX: Toggle Speech Pause/Resume Logic
+ttsToggle.addEventListener('click', () => {
+    ttsEnabled = !ttsEnabled;
+
+    if (!ttsEnabled) {
+        // Mute/Pause Logic: Use pause() to stop speech but keep position
+        if (window.speechSynthesis.speaking) {
+            window.speechSynthesis.pause(); // 🛑 KEY FIX
+        }
+        ttsToggle.innerHTML = '<i class="fas fa-volume-mute"></i> Speech Muted';
+    } else {
+        // Unmute/Resume Logic
+        if (window.speechSynthesis.paused) {
+            window.speechSynthesis.resume(); // 🛑 KEY FIX
+        }
+        ttsToggle.innerHTML = '<i class="fas fa-volume-up"></i> Speech Active';
+    }
+});
+
+const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+            // Check if the node is an element and has the 'message-bot' class
+            if (node.nodeType === 1 && node.classList && node.classList.contains('message-bot')) {
+                // If TTS is enabled and nothing is currently speaking, start speaking.
+                // We check if it's speaking/paused here to prevent re-speaking on resume.
+                if (ttsEnabled && !window.speechSynthesis.speaking) {
+                    const text = node.querySelector('.message-content').textContent;
+                    speak(text);
+                }
+            }
+        });
+    });
+});
+
+observer.observe(chatMessages, { childList: true });
+
+// Start interview
+startInterviewBtn.addEventListener('click', async () => {
+    const jobType = document.getElementById('job-type').value.trim();
+
+    if (!jobType) {
+        addMessage('bot', 'Please enter a job position to start the interview.');
+        return;
+    }
+
+    isInterviewActive = true;
+    userInput.disabled = false;
+    sendBtn.disabled = false;
+    startInterviewBtn.disabled = true;
+
+    addMessage('bot', `Starting interview preparation for <strong>${jobType}</strong>. Please wait...`);
+
+    conversationHistory = [];
+
+    const response = await callBackendAPI('start-interview', { job_type: jobType });
+
+    if (response) {
+        // Expecting structured response from the fixed app.py
+        displayInterviewResponse(response);
+    }
+});
+
+// End interview
+endInterviewBtn.addEventListener('click', () => {
+    if (!isInterviewActive) return;
+
+    isInterviewActive = false;
+    userInput.disabled = true;
+    sendBtn.disabled = true;
+    startInterviewBtn.disabled = false;
+
+    addMessage('bot', 'Interview session ended. You can start a new session anytime.');
+    conversationHistory = [];
+    if (nextQuestionText) {
+        nextQuestionText.textContent = 'Click "Start Interview" to begin!'; // Clear the separate question area
+    }
+});
+
+// Send message functionality
+sendBtn.addEventListener('click', sendMessage);
+userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+});
+
+async function sendMessage() {
+    const message = userInput.value.trim();
+    if (!message) return;
+
+    // Disable input while processing
+    userInput.disabled = true;
+    sendBtn.disabled = true;
+    sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+    try {
+        addMessage('user', message);
+        userInput.value = '';
+        lastUserAnswer = message;
+
+        // Ensure we have the current job type
+        const jobType = document.getElementById('job-type').value.trim();
+        if (!jobType && isInterviewActive) {
+            addMessage('bot', 'Please select a job position first.');
+            return;
+        }
+
+        // Add the user message to conversation history
+        conversationHistory.push({ role: 'user', content: message });
+
+        const response = await callBackendAPI('interview-chatbot', {
+            job_type: jobType,
+            conversation_history: conversationHistory,
+            user_message: message
+        });
+
+        // FIX: Now expecting { feedback: "...", next_question: "..." }
+        if (response) {
+            displayInterviewResponse(response);
+        }
+    } catch (error) {
+        console.error('Error sending message:', error);
+        addMessage('bot', 'Sorry, there was an error processing your response. Please try again.');
+    } finally {
+        // Re-enable input
+        userInput.disabled = false;
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send';
+        userInput.focus();
+    }
+}
+
+// Theme Toggle Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('themeToggle');
+    
+    // Check for saved theme preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const savedTheme = localStorage.getItem('theme');
+    
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.body.classList.add('dark');
+    }
+    
+    // Toggle theme on click
+    themeToggle.addEventListener('click', function() {
+        const container = themeToggle.querySelector('.toggle-container');
+        const icon = themeToggle.querySelector('.toggle-icon');
+        
+        // Add animation class
+        container.classList.add('theme-changed');
+        
+        // Remove animation class after it completes
+        setTimeout(() => {
+            container.classList.remove('theme-changed');
+        }, 600);
+        
+        // Toggle theme
+        document.body.classList.toggle('dark');
+        const isDark = document.body.classList.contains('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        
+        // Change icon
+        if (isDark) {
+            icon.classList.replace('fa-sun', 'fa-adjust');
+            icon.classList.replace('fa-moon', 'fa-adjust');
+        }
+    });
+    
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (!localStorage.getItem('theme')) {
+            document.body.classList.toggle('dark', e.matches);
+        }
+    });
+});
+
+    </script>
+</body>
+</html>

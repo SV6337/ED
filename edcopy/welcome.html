@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome | Edvantage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  
+
+  <style>
+    :root {
+      --accent: #ff9e7d;
+      --text-light: #f4f4f4;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(to bottom, #004e5a, #002a33);
+      color: var(--text-light);
+      overflow: hidden;
+    }
+
+    .welcome-container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      animation: fadeInScale 1s ease forwards;
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    @keyframes fadeInScale {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .logo {
+      width: 120px;
+      margin-bottom: 25px;
+      animation: slideDown 1.2s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 10px;
+      animation: fadeInText 1.5s ease;
+    }
+
+    p.tagline {
+      font-size: 18px;
+      color: var(--text-light);
+      opacity: 0.85;
+      animation: fadeInText 1.8s ease;
+    }
+
+    @keyframes fadeInText {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .quote {
+  margin-top: 15px;
+  font-size: 16px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.8);
+  animation: fadeInText 2s ease;
+}
+
+@media (max-width: 768px) {
+  .welcome-container {
+    padding: 25px 20px;
+    margin: 0 15px;
+    border-radius: 12px;
+  }
+
+  .logo {
+    width: 90px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  p.tagline {
+    font-size: 16px;
+  }
+
+  .quote {
+    font-size: 14px;
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-container {
+    padding: 20px 15px;
+    margin: 0 10px;
+  }
+
+  .logo {
+    width: 70px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  p.tagline {
+    font-size: 14px;
+  }
+
+  .quote {
+    font-size: 13px;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="welcome-container">
+    <img class="logo" src="Your_paragraph_text-removebg-preview.png" alt="Edvantage Logo" />
+    <h1 id="welcomeText">Welcome!</h1>
+    <p class="tagline">Empowering Tomorrow’s Minds — Today.</p>
+<p class="quote" id="quoteText" style="display: none;"></p>
+
+
+  </div>
+
+  <script>
+    const userName = localStorage.getItem('userName') || 'User';
+const userRole = localStorage.getItem('userRole') || '';
+
+document.getElementById('welcomeText').textContent = `Welcome, ${userName}!`;
+
+if (userRole === 'student') {
+  const quotes = [
+    '"The future belongs to those who prepare for it today." – Malcolm X',
+    '"Success is not the key to happiness. Happiness is the key to success." – Albert Schweitzer',
+    '"Believe you can and you’re halfway there." – Theodore Roosevelt',
+    '"Learning never exhausts the mind." – Leonardo da Vinci'
+  ];
+  const quote = quotes[Math.floor(Math.random() * quotes.length)];
+  const quoteText = document.getElementById('quoteText');
+  quoteText.textContent = quote;
+  quoteText.style.display = 'block';
+}
+
+setTimeout(() => {
+  if (userRole === 'admin') {
+    window.location.href = 'admin_dashboard.html';
+  } else if (userRole === 'teacher') {
+    window.location.href = 'teachers.html';
+  } else {
+    window.location.href = 'students.html';
+  }
+}, 3000);
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+
+  </script>
+</body>
+</html>

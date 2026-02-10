@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Approval - EDVANTAGE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+
+    <style>
+        :root {
+            /* Light Mode Colors - Same as admin_dashboard */
+            --primary: #008080;
+            --primary-light: #83c5be;
+            --primary-dark: #004e5a;
+            --secondary: #3a506b;
+            --accent: #ff9e7d;
+            --light: #f8f9fa;
+            --dark: #2b2d42;
+            --gray: #e9ecef;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --card-bg: #ffffff;
+            --text-primary: #2b2d42;
+            --text-secondary: #4a4e69;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --sidebar-bg: linear-gradient(180deg, var(--primary-dark), var(--primary));
+            
+            /* Dark Mode Colors */
+            --dark-primary: #008080;
+            --dark-primary-light: #006d77;
+            --dark-primary-dark: #004e5a;
+            --dark-secondary: #b8c2cc;
+            --dark-accent: #ff9e7d;
+            --dark-light: #121212;
+            --dark-dark: #e0e0e0;
+            --dark-gray: #1e1e1e;
+            --dark-card-bg: #1e1e1e;
+            --dark-text-primary: #e0e0e0;
+            --dark-text-secondary: #b8c2cc;
+            --dark-border-color: rgba(255, 255, 255, 0.08);
+            --dark-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --dark-sidebar-bg: linear-gradient(180deg, #004e5a, #002a33);
+            
+            /* Shared Variables */
+            --sidebar-width: 280px;
+            --border-radius: 12px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+        }
+
+        body.dark {
+            --primary: var(--dark-primary);
+            --primary-light: var(--dark-primary-light);
+            --primary-dark: var(--dark-primary-dark);
+            --secondary: var(--dark-secondary);
+            --accent: var(--dark-accent);
+            --light: var(--dark-light);
+            --dark: var(--dark-dark);
+            --gray: var(--dark-gray);
+            --card-bg: var(--dark-card-bg);
+            --text-primary: var(--dark-text-primary);
+            --text-secondary: var(--dark-text-secondary);
+            --border-color: var(--dark-border-color);
+            --card-shadow: var(--dark-card-shadow);
+            --sidebar-bg: var(--dark-sidebar-bg);
+        }
+
+        /* Theme Toggle Switch */
+        .theme-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid var(--border-color);
+        }
+
+        .toggle-container:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-icon {
+            font-size: 1.4rem;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        body.dark .toggle-icon {
+            color: var(--accent);
+        }
+
+        /* Container */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            left: -280px;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            padding: 14px 25px;
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+            font-size: 0.95rem;
+            margin: 4px 0;
+        }
+
+        .sidebar-nav li a:hover,
+        .sidebar-nav li a.active {
+            background-color: rgba(255,255,255,0.1);
+            border-left: 4px solid var(--accent);
+        }
+
+        .sidebar-nav li a i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background-color: var(--light);
+            min-height: 100vh;
+            transition: background-color 0.3s ease, margin-left 0.3s ease;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .logout-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .logout-btn i {
+            margin-right: 8px;
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: none;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: 600;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        th {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            font-weight: 500;
+        }
+
+        tr:hover td {
+            background-color: rgba(131, 197, 190, 0.1);
+        }
+
+        /* Status Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-pending {
+            background-color: rgba(255, 152, 0, 0.2);
+            color: var(--warning);
+        }
+
+        .badge-approved {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--success);
+        }
+
+        .badge-rejected {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: var(--danger);
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+        }
+
+        .btn i {
+            margin-right: 6px;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #43a047;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #e53935;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #2c3a4d;
+            transform: translateY(-1px);
+        }
+
+        /* Row Status Styles */
+        .approved-row {
+            background-color: rgba(76, 175, 80, 0.08);
+            border-left: 4px solid var(--success);
+        }
+
+        .rejected-row {
+            background-color: rgba(244, 67, 54, 0.08);
+            border-left: 4px solid var(--danger);
+        }
+
+        .pending-row {
+            background-color: rgba(255, 152, 0, 0.08);
+            border-left: 4px solid var(--warning);
+        }
+
+        /* Attendance Percentage */
+        .attendance-percentage {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .attendance-percentage.high {
+            color: var(--success);
+        }
+
+        .attendance-percentage.medium {
+            color: var(--warning);
+        }
+
+        .attendance-percentage.low {
+            color: var(--danger);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            border: none;
+            background: var(--card-bg);
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            z-index: 1200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* Mobile Overlay */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 99;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .toast {
+            min-width: 260px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            background: var(--card-bg);
+            box-shadow: var(--card-shadow);
+            border-left: 4px solid var(--primary);
+            animation: slideIn 0.25s ease;
+            font-size: 0.9rem;
+        }
+
+        .toast.success { border-color: var(--success); }
+        .toast.error { border-color: var(--danger); }
+
+        @keyframes slideIn {
+            from { transform: translateX(40px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 260px;
+                left: -260px;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .main-content {
+                padding: 20px;
+                padding-top: 70px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                padding-top: 50px;
+            }
+
+            .header h1 {
+                font-size: 1.3rem;
+            }
+
+            .logout-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+
+            .card {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                font-size: 14px;
+            }
+
+            th, td {
+                white-space: nowrap;
+                padding: 10px 12px;
+            }
+
+            .mobile-overlay.active {
+                display: block;
+            }
+
+            .action-btns {
+                display: flex;
+                gap: 6px;
+            }
+
+            .btn {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.1rem;
+            }
+
+            .toggle-container {
+                width: 40px;
+                height: 40px;
+            }
+
+            .toggle-icon {
+                font-size: 1.2rem;
+            }
+
+            .btn {
+                padding: 5px 8px;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Page container for better layout */
+        .page-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Section description text */
+        .section-hint {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Modal for confirmations */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 12px;
+            width: 320px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .modal h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Action buttons container */
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Status indicator */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-dot.pending {
+            background-color: var(--warning);
+        }
+
+        .status-dot.approved {
+            background-color: var(--success);
+        }
+
+        .status-dot.rejected {
+            background-color: var(--danger);
+        }
+
+        /* Table Toolbar */
+        .table-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.8rem;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .filter-btn:hover {
+            background: var(--gray);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hamburger Button -->
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Mobile Overlay -->
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-graduation-cap"></i><span> EDVANTAGE</span></h2>
+            </div>
+            <ul class="sidebar-nav">
+      <li><a href="teachers.html"><i class="fas fa-home"></i><span> Dashboard</span></a></li>
+      <li><a href="resources.html"><i class="fas fa-folder"></i><span> Resources Upload</span></a></li>
+      <li><a href="attendance.html"><i class="fas fa-check-circle"></i><span> Attendance Update</span></a></li>
+      <li><a href="messages.html"><i class="fas fa-envelope"></i><span> Messages</span></a></li>
+      <li><a href="performance.html"><i class="fas fa-chart-bar"></i><span> Student Performance</span></a></li>
+      <li><a href="teachers.html#"><i class="fas fa-brain"></i><span> Interview Performance</span></a></li>
+      <li><a href="events.html"><i class="fas fa-calendar-alt"></i><span> Event Notifications</span></a></li>
+      <li><a href="leave-approval.html"><i class="fas fa-file-signature"></i><span> Leave Approval</span></a></li>
+      <li><a href="daily-planner.html"><i class="fas fa-clipboard-list"></i><span> Daily Planner</span></a></li>
+    </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="header-title">
+                    <h1>Leave Approval System</h1>
+                </div>
+                <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+
+            <div class="page-container">
+                <!-- Leave Requests Card -->
+                <div class="card">
+                    <h3><i class="fas fa-file-signature"></i> Pending Leave Requests</h3>
+                    <p class="section-hint">
+                        Review and manage leave requests from students. Approve or reject based on attendance percentage.
+                    </p>
+
+                    <!-- Filter Options -->
+                    <div class="table-toolbar">
+                        <div class="filter-options">
+                            <button class="filter-btn active" onclick="filterRequests('all')">All</button>
+                            <button class="filter-btn" onclick="filterRequests('pending')">Pending</button>
+                            <button class="filter-btn" onclick="filterRequests('approved')">Approved</button>
+                            <button class="filter-btn" onclick="filterRequests('rejected')">Rejected</button>
+                        </div>
+                        <div class="table-actions">
+                            <button class="btn btn-secondary" onclick="refreshRequests()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Leave Requests Table -->
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Leave Date</th>
+                                <th>Reason</th>
+                                <th>Attendance %</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaveRequestsTable">
+                            <!-- Leave requests will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal-backdrop" id="confirmModal">
+        <div class="modal">
+            <h3 id="confirmTitle">Confirm Action</h3>
+            <p id="confirmText">Are you sure you want to perform this action?</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeConfirm()">Cancel</button>
+                <button class="btn" id="confirmYes">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <div class="toggle-container">
+            <i class="fas fa-adjust toggle-icon"></i>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = 'http://localhost:5000';
+        let leaveRequests = [];
+        let currentFilter = 'all';
+        let pendingAction = null;
+
+        // Toast notification system (same as admin dashboard)
+        function showToast(message, type = "success") {
+            const container = document.getElementById("toastContainer");
+            const toast = document.createElement("div");
+            toast.className = `toast ${type}`;
+            toast.innerText = message;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('teacherId');
+            localStorage.removeItem('teacherName');
+            window.location.href = "index.html";
+        }
+
+        // Toggle sidebar for mobile
+        document.addEventListener("DOMContentLoaded", () => {
+            const hamburger = document.getElementById("hamburgerBtn");
+            const sidebar = document.querySelector(".sidebar");
+            const overlay = document.getElementById("mobileOverlay");
+
+            hamburger.addEventListener("click", () => {
+                sidebar.classList.toggle("active");
+                hamburger.classList.toggle("active");
+                overlay.classList.toggle("active");
+                document.body.classList.toggle("menu-open", sidebar.classList.contains("active"));
+            });
+
+            overlay.addEventListener("click", () => {
+                sidebar.classList.remove("active");
+                hamburger.classList.remove("active");
+                overlay.classList.remove("active");
+                document.body.classList.remove("menu-open");
+            });
+
+            // Close sidebar when clicking on a link (mobile)
+            document.querySelectorAll(".sidebar-nav a").forEach(link => {
+                link.addEventListener("click", () => {
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove("active");
+                        hamburger.classList.remove("active");
+                        overlay.classList.remove("active");
+                        document.body.classList.remove("menu-open");
+                    }
+                });
+            });
+        });
+
+        // Theme toggle system (same as admin dashboard)
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.querySelector('.theme-toggle');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const savedTheme = localStorage.getItem('theme');
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.body.classList.add('dark');
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                const container = themeToggle.querySelector('.toggle-container');
+                const icon = themeToggle.querySelector('.toggle-icon');
+                
+                container.classList.add('theme-changed');
+                setTimeout(() => {
+                    container.classList.remove('theme-changed');
+                }, 600);
+                
+                document.body.classList.toggle('dark');
+                const isDark = document.body.classList.contains('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+            
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                if (!localStorage.getItem('theme')) {
+                    document.body.classList.toggle('dark', e.matches);
+                }
+            });
+        });
+
+        // Service Worker registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js');
+        }
+
+        // Filter leave requests
+        function filterRequests(filter) {
+            currentFilter = filter;
+            
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateLeaveRequestsTable();
+        }
+
+        // Fetch Leave Requests
+        async function fetchLeaveRequests() {
+            try {
+                const teacherId = localStorage.getItem('teacherId');
+                if (!teacherId) {
+                    showToast('Please log in first', 'error');
+                    setTimeout(() => window.location.href = "index.html", 1500);
+                    return;
+                }
+
+                const response = await fetch(`${BASE_URL}/leave-requests?teacherId=${teacherId}`);
+                if (!response.ok) throw new Error('Failed to fetch leave requests');
+                
+                leaveRequests = await response.json();
+                updateLeaveRequestsTable();
+            } catch (error) {
+                console.error('Error fetching leave requests:', error);
+                showToast('Failed to load leave requests', 'error');
+            }
+        }
+
+        // Refresh requests
+        function refreshRequests() {
+            fetchLeaveRequests();
+            showToast('Refreshing leave requests...');
+        }
+
+        // Update Leave Request Status
+        async function updateLeaveRequestStatus(id, status) {
+            try {
+                // Map button text to valid status values
+                const validStatus = {
+                    'Approve': 'Approved',
+                    'Reject': 'Rejected'
+                };
+
+                const mappedStatus = validStatus[status];
+                if (!mappedStatus) {
+                    showToast('Invalid status value', 'error');
+                    return;
+                }
+
+                console.log('Updating leave request status:', { id, status: mappedStatus });
+
+                // Send PUT request to update leave request status
+                const response = await fetch(`${BASE_URL}/leave-requests/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: mappedStatus }),
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('Error updating leave request:', errorData);
+                    showToast(errorData.message || 'Failed to update leave request', 'error');
+                    return;
+                }
+
+                const result = await response.json();
+                showToast(`Leave request ${status.toLowerCase()} successfully`);
+
+                // Refresh leave requests
+                await fetchLeaveRequests();
+            } catch (error) {
+                console.error('Error updating leave request:', error);
+                showToast('Failed to update leave request', 'error');
+            }
+        }
+
+        // Confirm action
+        function confirmAction(requestId, status, studentName) {
+            pendingAction = { requestId, status };
+            const modal = document.getElementById('confirmModal');
+            const title = document.getElementById('confirmTitle');
+            const text = document.getElementById('confirmText');
+            const confirmBtn = document.getElementById('confirmYes');
+            
+            title.textContent = `${status} Leave Request`;
+            text.textContent = `Are you sure you want to ${status.toLowerCase()} the leave request for ${studentName}?`;
+            confirmBtn.textContent = status;
+            confirmBtn.className = `btn ${status === 'Approve' ? 'btn-success' : 'btn-danger'}`;
+            
+            modal.style.display = 'flex';
+        }
+
+        // Close confirmation modal
+        function closeConfirm() {
+            document.getElementById('confirmModal').style.display = 'none';
+            pendingAction = null;
+        }
+
+        // Execute confirmed action
+        document.getElementById('confirmYes').addEventListener('click', () => {
+            if (pendingAction) {
+                updateLeaveRequestStatus(pendingAction.requestId, pendingAction.status);
+                closeConfirm();
+            }
+        });
+
+        // Get attendance class for styling
+        function getAttendanceClass(percentage) {
+            if (percentage >= 75) return 'high';
+            if (percentage >= 50) return 'medium';
+            return 'low';
+        }
+
+        // Update Leave Requests Table
+        function updateLeaveRequestsTable() {
+            const leaveRequestsTable = document.getElementById("leaveRequestsTable");
+            
+            if (!leaveRequests || leaveRequests.length === 0) {
+                leaveRequestsTable.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                            <p>No leave requests found.</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            // Filter requests
+            let filteredRequests = leaveRequests;
+            if (currentFilter === 'pending') {
+                filteredRequests = leaveRequests.filter(req => req.status === 'Pending');
+            } else if (currentFilter === 'approved') {
+                filteredRequests = leaveRequests.filter(req => req.status === 'Approved');
+            } else if (currentFilter === 'rejected') {
+                filteredRequests = leaveRequests.filter(req => req.status === 'Rejected');
+            }
+
+            leaveRequestsTable.innerHTML = "";
+
+            filteredRequests.forEach((request) => {
+                const row = document.createElement("tr");
+                
+                // Determine row class based on status
+                let rowClass = '';
+                if (request.status === 'Approved') rowClass = 'approved-row';
+                else if (request.status === 'Rejected') rowClass = 'rejected-row';
+                else if (request.status === 'Pending') rowClass = 'pending-row';
+                
+                // Get attendance class
+                const attendanceClass = getAttendanceClass(request.attendancePercentage || 0);
+                
+                row.className = rowClass;
+                row.innerHTML = `
+                    <td>${request.studentName || 'Unknown Student'}</td>
+                    <td>${new Date(request.leaveDate).toLocaleDateString('en-US', {
+                        weekday: 'short',
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    })}</td>
+                    <td>${request.reason || 'No reason provided'}</td>
+                    <td>
+                        <span class="attendance-percentage ${attendanceClass}">
+                            ${request.attendancePercentage || 0}%
+                        </span>
+                    </td>
+                    <td>
+                        <div class="status-indicator">
+                            <span class="status-dot ${request.status.toLowerCase()}"></span>
+                            <span class="badge badge-${request.status.toLowerCase()}">
+                                ${request.status}
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="action-btns">
+                            ${request.status === "Pending" ? `
+                                <button onclick="confirmAction('${request._id}', 'Approve', '${request.studentName}')" 
+                                        class="btn btn-success">
+                                    <i class="fas fa-check"></i> Approve
+                                </button>
+                                <button onclick="confirmAction('${request._id}', 'Reject', '${request.studentName}')" 
+                                        class="btn btn-danger">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
+                            ` : `
+                                <span style="color: var(--text-secondary); font-size: 0.85rem;">
+                                    ${request.status}
+                                </span>
+                            `}
+                        </div>
+                    </td>
+                `;
+
+                leaveRequestsTable.appendChild(row);
+            });
+        }
+
+        // Fetch Leave Requests When the Page Loads
+        window.onload = fetchLeaveRequests;
+
+        // Auto-refresh leave requests every 30 seconds
+        setInterval(fetchLeaveRequests, 30000);
+
+        // Touch swipe to close sidebar (mobile)
+        let touchStartX = 0;
+        document.addEventListener("touchstart", e => {
+            touchStartX = e.touches[0].clientX;
+        });
+
+        document.addEventListener("touchend", e => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diffX = touchEndX - touchStartX;
+
+            const sidebar = document.querySelector(".sidebar");
+            const overlay = document.getElementById("mobileOverlay");
+            const hamburger = document.getElementById("hamburgerBtn");
+
+            // Swipe left to close
+            if (diffX < -60 && sidebar.classList.contains("active")) {
+                sidebar.classList.remove("active");
+                hamburger.classList.remove("active");
+                overlay.classList.remove("active");
+                document.body.classList.remove("menu-open");
+            }
+        });
+    </script>
+</body>
+</html>

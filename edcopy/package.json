@@ -1,0 +1,25 @@
+{
+  "name": "edvantage-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "exceljs": "^4.4.0",
+    "express": "^4.22.1",
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.23.0",
+    "multer": "^2.0.2",
+    "nodemailer": "^7.0.3",
+    "path": "^0.12.7",
+    "pdfkit": "^0.16.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

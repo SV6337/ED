@@ -1,0 +1,1159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources Upload - EDVANTAGE</title>
+    
+    <!-- Same dependencies as admin_dashboard.html -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    
+    <style>
+        /* Copy EXACT same CSS variables from admin_dashboard.html */
+        :root {
+            /* Light Mode Colors */
+            --primary: #008080;
+            --primary-light: #83c5be;
+            --primary-dark: #004e5a;
+            --secondary: #3a506b;
+            --accent: #ff9e7d;
+            --light: #f8f9fa;
+            --dark: #2b2d42;
+            --gray: #e9ecef;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --card-bg: #ffffff;
+            --text-primary: #2b2d42;
+            --text-secondary: #4a4e69;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --sidebar-bg: linear-gradient(180deg, var(--primary-dark), var(--primary));
+            
+            /* Dark Mode Colors */
+            --dark-primary: #008080;
+            --dark-primary-light: #006d77;
+            --dark-primary-dark: #004e5a;
+            --dark-secondary: #b8c2cc;
+            --dark-accent: #ff9e7d;
+            --dark-light: #121212;
+            --dark-dark: #e0e0e0;
+            --dark-gray: #1e1e1e;
+            --dark-card-bg: #1e1e1e;
+            --dark-text-primary: #e0e0e0;
+            --dark-text-secondary: #b8c2cc;
+            --dark-border-color: rgba(255, 255, 255, 0.08);
+            --dark-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --dark-sidebar-bg: linear-gradient(180deg, #004e5a, #002a33);
+            
+            /* Shared Variables */
+            --sidebar-width: 280px;
+            --border-radius: 12px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        body.dark {
+            --primary: var(--dark-primary);
+            --primary-light: var(--dark-primary-light);
+            --primary-dark: var(--dark-primary-dark);
+            --secondary: var(--dark-secondary);
+            --accent: var(--dark-accent);
+            --light: var(--dark-light);
+            --dark: var(--dark-dark);
+            --gray: var(--dark-gray);
+            --card-bg: var(--dark-card-bg);
+            --text-primary: var(--dark-text-primary);
+            --text-secondary: var(--dark-text-secondary);
+            --border-color: var(--dark-border-color);
+            --card-shadow: var(--dark-card-shadow);
+            --sidebar-bg: var(--dark-sidebar-bg);
+        }
+        
+        /* Theme Toggle Switch - Updated Style */
+        .theme-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+        }
+        
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-color);
+        }
+        
+        .toggle-container:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-icon {
+            font-size: 1.4rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        body.dark .toggle-icon {
+            color: var(--accent);
+        }
+        
+        /* Container */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles - Matching admin_dashboard */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            z-index: 1200;
+            left: -100%;
+        }
+
+        /* Show sidebar when active (works on all widths) */
+        .sidebar.active {
+            left: 0;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            padding: 14px 25px;
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+            font-size: 0.95rem;
+            margin: 4px 0;
+        }
+        
+        .sidebar-nav li a:hover,
+        .sidebar-nav li a.active {
+            background-color: rgba(255,255,255,0.1);
+            border-left: 4px solid var(--accent);
+        }
+        
+        .sidebar-nav li a i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background-color: var(--light);
+            min-height: 100vh;
+            transition: background-color 0.3s ease;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .logout-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .logout-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .logout-btn i {
+            margin-right: 8px;
+        }
+        
+        /* Card Styles */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 28px 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: none;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        
+        .card h3 {
+            margin-top: 0;
+            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: 600;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition);
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 109, 119, 0.1);
+        }
+        
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23008080' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+        }
+        
+        /* Button Styles */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            min-height: 44px;
+            font-size: 0.95rem;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            box-shadow: none;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--gray);
+            transform: none;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #e53935;
+            transform: translateY(-2px);
+        }
+        
+        /* File Input Styles */
+        .file-input-wrapper {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-input-label {
+            display: block;
+            padding: 25px;
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: rgba(0, 109, 119, 0.03);
+            color: var(--text-primary);
+        }
+        
+        .file-input-label:hover {
+            border-color: var(--primary);
+            background-color: rgba(0, 109, 119, 0.05);
+            transform: translateY(-2px);
+        }
+        
+        .file-input-label i {
+            display: block;
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .file-input-label span {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .file-input-label small {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        /* Resource Items */
+        .resource-item {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .resource-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+        
+        .resource-header {
+            flex: 1;
+        }
+        
+        .resource-header h4 {
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .resource-category {
+            background-color: rgba(0, 128, 128, 0.1);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: capitalize;
+            display: inline-block;
+        }
+        
+        /* Toast Container */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .toast {
+            min-width: 260px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            background: var(--card-bg);
+            box-shadow: var(--card-shadow);
+            border-left: 4px solid var(--primary);
+            animation: slideIn 0.25s ease;
+            font-size: 0.9rem;
+        }
+        
+        .toast.success { border-color: var(--success); }
+        .toast.error { border-color: var(--danger); }
+        
+        @keyframes slideIn {
+            from { transform: translateX(40px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* Hamburger Menu */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            border: none;
+            background: var(--card-bg);
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            z-index: 1400;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: 0.3s ease;
+        }
+        
+        /* Active = X */
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Section description text */
+        .section-hint {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+        
+        /* Button loading state */
+        .btn.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        
+        /* Mobile Overlay */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1100;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 280px;
+                left: -100%;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .main-content {
+                padding: 20px;
+                margin-left: 0 !important;
+                width: 100%;
+            }
+            
+            .hamburger {
+                display: flex !important;
+                position: fixed !important;
+                top: 16px !important;
+                left: 16px !important;
+                width: 44px !important;
+                height: 44px !important;
+            }
+            
+            .header {
+                padding-left: 64px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .header h1 {
+                font-size: 1.2rem;
+            }
+            
+            .card {
+                padding: 20px;
+                border-radius: 16px;
+            }
+            
+            .logout-btn {
+                align-self: flex-start;
+            }
+            
+            .resource-item {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .resource-header {
+                width: 100%;
+            }
+            
+            .toggle-container {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .toggle-icon {
+                font-size: 1.2rem;
+            }
+            
+            body.menu-open {
+                overflow: hidden;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.1rem;
+            }
+            
+            .card h3 {
+                font-size: 1.1rem;
+            }
+            
+            .btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Touch feedback */
+        .sidebar a:active {
+            transform: scale(0.98);
+        }
+        
+        .btn:active {
+            transform: scale(0.97);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-graduation-cap"></i><span> EDVANTAGE</span></h2>
+            </div>
+            <ul class="sidebar-nav">
+      <li><a href="teachers.html"><i class="fas fa-home"></i><span> Dashboard</span></a></li>
+      <li><a href="resources.html"><i class="fas fa-folder"></i><span> Resources Upload</span></a></li>
+      <li><a href="attendance.html"><i class="fas fa-check-circle"></i><span> Attendance Update</span></a></li>
+      <li><a href="messages.html"><i class="fas fa-envelope"></i><span> Messages</span></a></li>
+      <li><a href="performance.html"><i class="fas fa-chart-bar"></i><span> Student Performance</span></a></li>
+      <li><a href="#" onclick="showSection('interview-performance')"><i class="fas fa-brain"></i><span> Interview Performance</span></a></li>
+      <li><a href="events.html"><i class="fas fa-calendar-alt"></i><span> Event Notifications</span></a></li>
+      <li><a href="leave-approval.html"><i class="fas fa-file-signature"></i><span> Leave Approval</span></a></li>
+      <li><a href="daily-planner.html"><i class="fas fa-clipboard-list"></i><span> Daily Planner</span></a></li>
+    </ul>
+        </div>
+        
+        <!-- Hamburger Button -->
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" onclick="toggleSidebar()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
+        <!-- Mobile Overlay -->
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="header-title">
+                    <h1>Upload Resources</h1>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+            
+            <div class="card">
+                <h3><i class="fas fa-file-upload"></i> Upload New Resource</h3>
+                <p class="section-hint">
+                    Upload assignments, notes, or reference materials for your students.
+                </p>
+                
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="file">Select File</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="file" name="file" class="form-control" required>
+                            <label for="file" class="file-input-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Choose a file to upload</span>
+                                <small>Supports PDF, DOC, PPT, and image files</small>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" class="form-control">
+                            <option value="assignment">Assignment</option>
+                            <option value="notes">Notes</option>
+                            <option value="reference">Reference Material</option>
+                            <option value="presentation">Presentation</option>
+                            <option value="syllabus">Syllabus</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-upload"></i> Upload Resource
+                    </button>
+                </form>
+                
+                <div id="uploadMessage" class="status"></div>
+            </div>
+            
+            <div class="card">
+                <h3><i class="fas fa-folder-open"></i> Uploaded Resources</h3>
+                <p class="section-hint">
+                    All resources you have uploaded will appear here.
+                </p>
+                
+                <div id="resources-list">
+                    <div class="empty-state">Loading resources...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle">
+        <div class="toggle-container">
+            <i class="fas fa-adjust toggle-icon"></i>
+        </div>
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <script>
+        const BASE_URL = 'http://localhost:5000';
+        
+        /* ===============================
+           THEME MANAGEMENT
+        =============================== */
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for saved theme preference
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const savedTheme = localStorage.getItem('theme');
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.body.classList.add('dark');
+            }
+            
+            // Toggle theme on click
+            const themeToggle = document.querySelector('.theme-toggle');
+            themeToggle.addEventListener('click', function() {
+                const container = themeToggle.querySelector('.toggle-container');
+                const icon = themeToggle.querySelector('.toggle-icon');
+                
+                // Add animation class
+                container.classList.add('theme-changed');
+                
+                // Remove animation class after it completes
+                setTimeout(() => {
+                    container.classList.remove('theme-changed');
+                }, 600);
+                
+                // Toggle theme
+                document.body.classList.toggle('dark');
+                const isDark = document.body.classList.contains('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+            
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                if (!localStorage.getItem('theme')) {
+                    document.body.classList.toggle('dark', e.matches);
+                }
+            });
+            
+            // Initialize PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('service-worker.js');
+            }
+            
+            // Setup hamburger menu
+            setupMobileMenu();
+            
+            // Load initial resources
+            loadResources();
+
+            // Show selected file name and size when choosing a file
+            const fileInputEl = document.getElementById('file');
+            const fileLabelSpan = document.querySelector('.file-input-label span');
+            const fileLabelSmall = document.querySelector('.file-input-label small');
+            if (fileInputEl) {
+                fileInputEl.addEventListener('change', () => {
+                    if (fileInputEl.files && fileInputEl.files[0]) {
+                        const f = fileInputEl.files[0];
+                        fileLabelSpan.textContent = f.name;
+                        fileLabelSmall.textContent = `${(f.size/1024).toFixed(2)} KB`;
+                    } else {
+                        fileLabelSpan.textContent = 'Choose a file to upload';
+                        fileLabelSmall.textContent = 'Supports PDF, DOC, PPT, and image files';
+                    }
+                });
+            }
+        });
+        
+        /* ===============================
+           TOAST SYSTEM
+        =============================== */
+        function showToast(message, type = "success") {
+            const container = document.getElementById("toastContainer");
+            const toast = document.createElement("div");
+            toast.className = `toast ${type}`;
+            toast.innerText = message;
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        /* ===============================
+           HAMBURGER MENU SYSTEM
+        =============================== */
+        // Fallback toggle available globally so inline onclick works
+        function toggleSidebar() {
+            const hamburger = document.getElementById('hamburgerBtn');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            if (!hamburger || !sidebar || !overlay) return;
+
+            const willOpen = !sidebar.classList.contains('active');
+            sidebar.classList.toggle('active');
+            hamburger.classList.toggle('active');
+            document.body.classList.toggle('menu-open', willOpen);
+
+            if (window.innerWidth <= 1024) {
+                overlay.style.display = willOpen ? 'block' : 'none';
+            } else {
+                overlay.style.display = 'none';
+            }
+
+            hamburger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        }
+        function setupMobileMenu() {
+            const hamburger = document.getElementById('hamburgerBtn');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            
+            hamburger.addEventListener('click', () => {
+                const isMobile = window.innerWidth <= 768;
+                
+                if (isMobile) {
+                    sidebar.classList.toggle('active');
+                    overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+                    hamburger.classList.toggle('active');
+                    document.body.classList.toggle('menu-open', sidebar.classList.contains('active'));
+                }
+            });
+            
+            overlay.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                overlay.style.display = 'none';
+                hamburger.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            });
+            
+            // Auto-close sidebar on link click (mobile)
+            document.querySelectorAll('.sidebar-nav a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('active');
+                        overlay.style.display = 'none';
+                        hamburger.classList.remove('active');
+                        document.body.classList.remove('menu-open');
+                    }
+                });
+            });
+            
+            // Swipe to close (mobile)
+            let touchStartX = 0;
+            
+            document.addEventListener('touchstart', e => {
+                touchStartX = e.touches[0].clientX;
+            });
+            
+            document.addEventListener('touchend', e => {
+                if (window.innerWidth > 768) return;
+                
+                const touchEndX = e.changedTouches[0].clientX;
+                const diffX = touchEndX - touchStartX;
+                
+                if (diffX < -60 && sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                    overlay.style.display = 'none';
+                    hamburger.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                }
+            });
+        }
+        
+        /* ===============================
+           UPLOAD FORM HANDLING
+        =============================== */
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const fileInput = document.getElementById('file');
+            const uploadBtn = form.querySelector('button[type="submit"]');
+            const messageDiv = document.getElementById('uploadMessage');
+            
+            // Validation
+            if (!fileInput.files[0]) {
+                messageDiv.innerHTML = '<div class="status error"><i class="fas fa-exclamation-circle"></i> Please select a file to upload</div>';
+                showToast('Please select a file', 'error');
+                return;
+            }
+            
+            // File size validation (10MB limit)
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            if (fileInput.files[0].size > maxSize) {
+                messageDiv.innerHTML = '<div class="status error"><i class="fas fa-exclamation-circle"></i> File size exceeds 10MB limit</div>';
+                showToast('File too large (max 10MB)', 'error');
+                return;
+            }
+            
+            // Set loading state
+            const originalText = uploadBtn.innerHTML;
+            uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+            uploadBtn.classList.add('loading');
+            messageDiv.innerHTML = '';
+            
+            try {
+                const formData = new FormData(form);
+                
+                const response = await fetch(`${BASE_URL}/upload`, {
+                    method: 'POST',
+                    body: formData,
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+                
+                const result = await response.json();
+                
+                // Success message
+                messageDiv.innerHTML = `
+                    <div class="status success">
+                        <i class="fas fa-check-circle"></i> 
+                        ${result.message || 'File uploaded successfully!'}
+                    </div>
+                `;
+                
+                showToast('Resource uploaded successfully!');
+                
+                // Reset form
+                form.reset();
+                
+                // Reload resources list
+                loadResources();
+                
+            } catch (error) {
+                console.error('Upload error:', error);
+                messageDiv.innerHTML = `
+                    <div class="status error">
+                        <i class="fas fa-times-circle"></i> 
+                        Failed to upload file. Please try again.
+                    </div>
+                `;
+                showToast('Upload failed. Please try again.', 'error');
+            } finally {
+                // Restore button
+                uploadBtn.innerHTML = originalText;
+                uploadBtn.classList.remove('loading');
+            }
+        });
+        
+        /* ===============================
+           LOAD RESOURCES
+        =============================== */
+        async function loadResources() {
+            const resourcesList = document.getElementById('resources-list');
+            
+            // Set loading state
+            resourcesList.innerHTML = '<div class="empty-state"><div class="spinner"></div>Loading resources...</div>';
+            
+            try {
+                const response = await fetch(`${BASE_URL}/resources`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load resources');
+                }
+                
+                const resources = await response.json();
+                
+                if (resources.length === 0) {
+                    resourcesList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-folder-open" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;"></i>
+                            <p>No resources uploaded yet.</p>
+                            <p class="section-hint">Upload your first resource using the form above.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                resourcesList.innerHTML = '';
+                
+                resources.forEach(resource => {
+                    const resourceDiv = document.createElement('div');
+                    resourceDiv.className = 'resource-item';
+                    
+                    // Format date
+                    const uploadDate = resource.uploadedAt 
+                        ? new Date(resource.uploadedAt).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                        })
+                        : 'Recently';
+                    
+                    // Format file size
+                    const formatFileSize = (bytes) => {
+                        if (bytes === 0) return '0 Bytes';
+                        const k = 1024;
+                        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                        const i = Math.floor(Math.log(bytes) / Math.log(k));
+                        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                    };
+                    
+                    resourceDiv.innerHTML = `
+                        <div class="resource-header">
+                            <h4>${resource.filename}</h4>
+                            <span class="resource-category">${resource.category}</span>
+                            <div style="margin-top: 8px; font-size: 0.8rem; color: var(--text-secondary);">
+                                <i class="fas fa-calendar-alt"></i> ${uploadDate}
+                                ${resource.size ? ' • <i class="fas fa-weight-hanging"></i> ' + formatFileSize(resource.size) : ''}
+                            </div>
+                        </div>
+                        <a href="${BASE_URL}/${resource.path}" 
+                           download="${resource.filename}" 
+                           class="btn btn-primary">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    `;
+                    
+                    resourcesList.appendChild(resourceDiv);
+                });
+                
+            } catch (error) {
+                console.error('Error loading resources:', error);
+                resourcesList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle" style="color: var(--danger); font-size: 2rem; margin-bottom: 10px;"></i>
+                        <p>Failed to load resources.</p>
+                        <p class="section-hint">Please check your connection and try again.</p>
+                    </div>
+                `;
+                showToast('Failed to load resources', 'error');
+            }
+        }
+        
+        /* ===============================
+           LOGOUT FUNCTION
+        =============================== */
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('teacherId');
+                localStorage.removeItem('teacherName');
+                window.location.href = "index.html";
+            }
+        }
+        
+        /* ===============================
+           KEYBOARD SHORTCUTS
+        =============================== */
+        document.addEventListener('keydown', e => {
+            // Ctrl + U to focus upload form
+            if (e.ctrlKey && e.key === 'u') {
+                e.preventDefault();
+                document.getElementById('file').focus();
+            }
+            
+            // Escape to close sidebar (mobile)
+            if (e.key === 'Escape' && window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                    document.getElementById('mobileOverlay').style.display = 'none';
+                    document.getElementById('hamburgerBtn').classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                }
+            }
+        });
+        
+        /* ===============================
+           TOUCH FEEDBACK
+        =============================== */
+        document.querySelectorAll('.btn, .sidebar-nav a').forEach(element => {
+            element.addEventListener('touchstart', () => {
+                element.style.transform = 'scale(0.97)';
+            });
+            
+            element.addEventListener('touchend', () => {
+                setTimeout(() => {
+                    element.style.transform = '';
+                }, 150);
+            });
+        });
+        
+        /* ===============================
+           AUTO REFRESH (optional)
+        =============================== */
+        // Uncomment if you want auto-refresh every 30 seconds
+        // setInterval(loadResources, 30000);
+    </script>
+</body>
+</html>

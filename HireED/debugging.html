@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debugging Practice - HireED</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            /* Light Mode Colors */
+            --primary: #008080;
+            --primary-light: #83c5be;
+            --primary-dark: #004e5a;
+            --secondary: #3a506b;
+            --accent: #ff9e7d;
+            --light: #f8f9fa;
+            --dark: #2b2d42;
+            --gray: #e9ecef;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --card-bg: #ffffff;
+            --text-primary: #2b2d42;
+            --text-secondary: #4a4e69;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --sidebar-bg: linear-gradient(180deg, var(--primary-dark), var(--primary));
+            
+            /* Dark Mode Colors */
+            --dark-primary: #008080;
+            --dark-primary-light: #006d77;
+            --dark-primary-dark: #004e5a;
+            --dark-secondary: #b8c2cc;
+            --dark-accent: #ff9e7d;
+            --dark-light: #121212;
+            --dark-dark: #e0e0e0;
+            --dark-gray: #1e1e1e;
+            --dark-card-bg: #1e1e1e;
+            --dark-text-primary: #e0e0e0;
+            --dark-text-secondary: #b8c2cc;
+            --dark-border-color: rgba(255, 255, 255, 0.08);
+            --dark-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --dark-sidebar-bg: linear-gradient(180deg, #004e5a, #002a33);
+            
+            /* Shared Variables */
+            --border-radius: 12px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        body.dark {
+            --primary: var(--dark-primary);
+            --primary-light: var(--dark-primary-light);
+            --primary-dark: var(--dark-primary-dark);
+            --secondary: var(--dark-secondary);
+            --accent: var(--dark-accent);
+            --light: var(--dark-light);
+            --dark: var(--dark-dark);
+            --gray: var(--dark-gray);
+            --card-bg: var(--dark-card-bg);
+            --text-primary: var(--dark-text-primary);
+            --text-secondary: var(--dark-text-secondary);
+            --border-color: var(--dark-border-color);
+            --card-shadow: var(--dark-card-shadow);
+            --sidebar-bg: var(--dark-sidebar-bg);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: var(--sidebar-bg);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+        
+        .logo h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: white;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        nav ul li a:hover,
+        nav ul li a.active {
+            background-color: rgba(255,255,255,0.1);
+            color: var(--accent);
+        }
+        
+        /* Main Content */
+        main {
+            padding: 30px 0;
+            min-height: calc(100vh - 200px);
+        }
+        
+        .page-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            height: fit-content;
+        }
+        
+        .sidebar-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .sidebar-title i {
+            font-size: 1.3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition);
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 109, 119, 0.1);
+        }
+        
+        /* Chat Container */
+        .chat-container {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            height: 700px;
+        }
+        
+        .chat-header {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .chat-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .message {
+            display: flex;
+            max-width: 100%;
+        }
+        
+        .message-bot {
+            align-self: flex-start;
+        }
+        
+        .message-user {
+            align-self: flex-end;
+        }
+        
+        .message-content {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            line-height: 1.6;
+            max-width: 100%;
+            word-wrap: break-word;
+        }
+        
+        .bot-message {
+            background: rgba(131, 197, 190, 0.15);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .user-message {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        
+        /* Debugging Challenge Styling */
+        .debugging-challenge {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            margin: 10px 0;
+        }
+        
+        .debugging-challenge h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .buggy-code {
+            background: var(--dark-light);
+            color: var(--danger);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid var(--danger);
+            white-space: pre-wrap;
+        }
+        
+        body.dark .buggy-code {
+            background: #0a0a0a;
+            color: #ff6b6b;
+            border-left-color: #ff6b6b;
+        }
+        
+        .test-cases {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .test-cases h5 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .test-case {
+            background: rgba(131, 197, 190, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .debug-hint {
+            background: rgba(255, 152, 0, 0.1);
+            border-left: 4px solid var(--warning);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+        
+        .debug-hint:before {
+            content: "💡 ";
+            font-weight: bold;
+        }
+        
+        /* Code Editor Styling */
+        .code-editor {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            background: var(--dark-light);
+            color: var(--success);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            resize: vertical;
+            margin: 15px 0;
+            transition: var(--transition);
+            border-left: 4px solid var(--success);
+        }
+        
+        body.dark .code-editor {
+            background: #0a0a0a;
+            color: #51cf66;
+            border-color: #333;
+            border-left-color: #51cf66;
+        }
+        
+        .code-editor:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 109, 119, 0.1);
+        }
+        
+        .reference-solution {
+            background: var(--dark-light);
+            color: var(--success);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid var(--success);
+            white-space: pre-wrap;
+        }
+        
+        body.dark .reference-solution {
+            background: #0a0a0a;
+            color: #51cf66;
+            border-left-color: #51cf66;
+        }
+        
+        pre {
+            margin: 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+        
+        /* Button Styles */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            gap: 10px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--sidebar-bg);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--accent);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+        }
+        
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-color);
+        }
+        
+        .toggle-container:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-icon {
+            font-size: 1.4rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        body.dark .toggle-icon {
+            color: var(--accent);
+        }
+        
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .toast {
+            min-width: 260px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            background: var(--card-bg);
+            box-shadow: var(--card-shadow);
+            border-left: 4px solid var(--primary);
+            animation: slideIn 0.25s ease;
+            font-size: 0.9rem;
+        }
+        
+        .toast.success { border-color: var(--success); }
+        .toast.error { border-color: var(--danger); }
+        
+        @keyframes slideIn {
+            from { transform: translateX(40px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                justify-content: center;
+                gap: 5px;
+            }
+            
+            nav ul li a {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .chat-container {
+                height: 600px;
+            }
+            
+            .buggy-code,
+            .code-editor,
+            .reference-solution {
+                font-size: 0.85rem;
+                padding: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .page-header h1 {
+                font-size: 1.5rem;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .sidebar, .chat-container {
+                padding: 20px;
+            }
+            
+            .debugging-challenge {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-user-tie"></i>
+                <h1>HireED</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="interview.html">Interview Prep</a></li>
+                    <li><a href="resume.html">Resume Builder</a></li>
+                    <li><a href="coding.html">Coding Practice</a></li>
+                    <li><a href="dsa.html">DSA Practice</a></li>
+                    <li><a href="debugging.html" class="active">Debugging</a></li>
+                    <li><a href="aptitude.html">Aptitude Tests</a></li>
+                    <li><a href="mocktest.html">Mock Test</a></li>
+                    <li><a href="analytics.html">Analytics</a></li>
+                    <li><a href="chat-history.html">Chat History</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-bug"></i> Debugging Practice</h1>
+            <p>Improve your debugging skills with real-world scenarios.</p>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="sidebar-title">
+                    <i class="fas fa-cog"></i>
+                    <span>Debugging Settings</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="debugging-difficulty">Difficulty</label>
+                    <select id="debugging-difficulty" class="form-control">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+                <button id="start-debugging" class="btn">
+                    <i class="fas fa-bug"></i> Start Debugging Challenge
+                </button>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-header">
+                    <i class="fas fa-bug"></i>
+                    <h2 id="chat-title">Debugging Challenge</h2>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message message-bot">
+                        <div class="message-content bot-message">
+                            Select a difficulty level and click "Start Debugging Challenge" to begin debugging practice.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>HireED</h3>
+                    <p>Your AI-powered career preparation assistant helping you land your dream job.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="interview.html">Interview Preparation</a></li>
+                        <li><a href="resume.html">Resume Builder</a></li>
+                        <li><a href="coding.html">Coding Practice</a></li>
+                        <li><a href="debugging.html">Debugging</a></li>
+                        <li><a href="aptitude.html">Aptitude Test</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:support@hired.com">support@hired.com</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 HireED. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <div class="theme-toggle">
+        <div class="toggle-container">
+            <i class="fas fa-adjust toggle-icon"></i>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="context.js"></script>
+    <script>
+// Debugging page JavaScript
+
+// Chat functionality
+const chatMessages = document.getElementById('chat-messages');
+const startDebuggingBtn = document.getElementById('start-debugging');
+
+const urlParams = new URLSearchParams(window.location.search);
+const urlStudentId = urlParams.get('studentId');
+const urlStudentName = urlParams.get('studentName');
+if (urlStudentId) localStorage.setItem('studentId', urlStudentId);
+if (urlStudentName) localStorage.setItem('studentName', urlStudentName);
+
+const CHAT_API_BASE = 'http://localhost:5001';
+const chatFeature = 'debugging';
+const studentId = localStorage.getItem('studentId') || 'anonymous';
+const studentName = localStorage.getItem('studentName') || localStorage.getItem('userName') || '';
+const chatSessionKey = `hireed_${chatFeature}_session`;
+let chatSessionId = sessionStorage.getItem(chatSessionKey);
+if (!chatSessionId) {
+    chatSessionId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+    sessionStorage.setItem(chatSessionKey, chatSessionId);
+}
+
+function stripHtml(html) {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.textContent || div.innerText || '';
+}
+
+function logChat(role, content, metadata = {}) {
+    const payload = {
+        studentId,
+        studentName,
+        feature: chatFeature,
+        role,
+        message: content,
+        message_text: stripHtml(content),
+        metadata,
+        sessionId: chatSessionId
+    };
+
+    fetch(`${CHAT_API_BASE}/log-chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    }).catch(() => {});
+}
+
+// Toast Notification Function
+function showToast(message, type = "success") {
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.innerText = message;
+    container.appendChild(toast);
+
+    setTimeout(() => toast.remove(), 3000);
+}
+
+function addMessage(role, content) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message message-${role === 'user' ? 'user' : 'bot'}`;
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = `message-content ${role === 'user' ? 'user-message' : 'bot-message'}`;
+    contentDiv.innerHTML = content;
+
+    messageDiv.appendChild(contentDiv);
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    logChat(role, content);
+}
+
+async function callBackendAPI(endpoint, data) {
+    try {
+        const response = await fetch(`http://localhost:5001/${endpoint}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(`Error calling ${endpoint}:`, error);
+        addMessage('bot', `Error: ${error.message}`);
+        showToast(`Error: ${error.message}`, "error");
+        return null;
+    }
+}
+
+// Debugging Challenge functionality
+startDebuggingBtn.addEventListener('click', async () => {
+    const difficulty = document.getElementById('debugging-difficulty').value;
+
+    // Get debugging challenge from backend
+    const response = await callBackendAPI('start-debugging-challenge', {
+        difficulty: difficulty
+    });
+
+    if (response && response.challenge) {
+        const challengeHtml = `
+            <div class="debugging-challenge">
+                <h4>Debug the following code:</h4>
+                <pre class="buggy-code">${response.challenge.buggy_code}</pre>
+                <div class="test-cases">
+                    <h5>Test Cases:</h5>
+                    ${response.challenge.test_cases.map(test => `
+                        <div class="test-case">Input: ${test}</div>
+                    `).join('')}
+                </div>
+                <p class="debug-hint">Hint: ${response.challenge.hint}</p>
+            </div>
+        `;
+
+        addMessage('bot', challengeHtml);
+        showToast(`Debugging challenge started! ${difficulty} level.`);
+
+        // Add code editor for fixes
+        const fixEditor = document.createElement('textarea');
+        fixEditor.id = 'fix-editor';
+        fixEditor.className = 'code-editor';
+        fixEditor.placeholder = 'Write your fixed code here...';
+        chatMessages.appendChild(fixEditor);
+
+        // Add submit button
+        const submitFixBtn = document.createElement('button');
+        submitFixBtn.id = 'submit-fix';
+        submitFixBtn.className = 'btn';
+        submitFixBtn.innerHTML = '<i class="fas fa-check"></i> Submit Fix';
+        chatMessages.appendChild(submitFixBtn);
+
+        // Handle fix submission
+        submitFixBtn.addEventListener('click', async () => {
+            const userFix = fixEditor.value.trim();
+            if (!userFix) {
+                addMessage('bot', 'Please write your fix before submitting.');
+                showToast('Please write your fix before submitting.', "error");
+                return;
+            }
+
+            // Validate fix
+            const evalResponse = await callBackendAPI('evaluate-debug-fix', {
+                original_code: response.challenge.buggy_code,
+                user_fix: userFix,
+                test_cases: response.challenge.test_cases
+            });
+
+            if (evalResponse) {
+                if (evalResponse.valid) {
+                    addMessage('bot', '✅ ' + evalResponse.message);
+                    showToast('🎉 Fix accepted! Great debugging skills!', "success");
+                } else {
+                    addMessage('bot', '❌ ' + evalResponse.message);
+                    showToast('Fix needs improvement.', "error");
+                }
+
+                if (evalResponse.reference_solution) {
+                    addMessage('bot', `📖 Reference Solution:<pre class="reference-solution">${evalResponse.reference_solution}</pre>`);
+                }
+            }
+
+            // Clean up
+            fixEditor.remove();
+            submitFixBtn.remove();
+        });
+    } else {
+        addMessage('bot', 'Failed to load debugging challenge. Please try again.');
+        showToast('Failed to load debugging challenge.', "error");
+    }
+});
+
+// Theme Toggle Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.querySelector('.theme-toggle');
+    
+    // Check for saved theme preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const savedTheme = localStorage.getItem('theme');
+    
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.body.classList.add('dark');
+    }
+    
+    // Toggle theme on click
+    themeToggle.addEventListener('click', function() {
+        const container = themeToggle.querySelector('.toggle-container');
+        const icon = themeToggle.querySelector('.toggle-icon');
+        
+        // Add animation class
+        container.classList.add('theme-changed');
+        
+        // Remove animation class after it completes
+        setTimeout(() => {
+            container.classList.remove('theme-changed');
+        }, 600);
+        
+        // Toggle theme
+        document.body.classList.toggle('dark');
+        const isDark = document.body.classList.contains('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        
+        // Change icon with rotation effect
+        if (isDark) {
+            icon.classList.replace('fa-sun', 'fa-adjust');
+            icon.classList.replace('fa-moon', 'fa-adjust');
+        }
+    });
+    
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (!localStorage.getItem('theme')) {
+            document.body.classList.toggle('dark', e.matches);
+        }
+    });
+});
+    </script>
+</body>
+</html>

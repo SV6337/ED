@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mock Test - HireED</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            /* Light Mode Colors - Matching admin_dashboard.html */
+            --primary: #008080;
+            --primary-light: #83c5be;
+            --primary-dark: #004e5a;
+            --secondary: #3a506b;
+            --accent: #ff9e7d;
+            --light: #f8f9fa;
+            --dark: #2b2d42;
+            --gray: #e9ecef;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --card-bg: #ffffff;
+            --text-primary: #2b2d42;
+            --text-secondary: #4a4e69;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            
+            /* Dark Mode Colors */
+            --dark-primary: #008080;
+            --dark-primary-light: #006d77;
+            --dark-primary-dark: #004e5a;
+            --dark-secondary: #b8c2cc;
+            --dark-accent: #ff9e7d;
+            --dark-light: #121212;
+            --dark-dark: #e0e0e0;
+            --dark-gray: #1e1e1e;
+            --dark-card-bg: #1e1e1e;
+            --dark-text-primary: #e0e0e0;
+            --dark-text-secondary: #b8c2cc;
+            --dark-border-color: rgba(255, 255, 255, 0.08);
+            --dark-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            
+            /* Shared Variables */
+            --border-radius: 12px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        body.dark {
+            --primary: var(--dark-primary);
+            --primary-light: var(--dark-primary-light);
+            --primary-dark: var(--dark-primary-dark);
+            --secondary: var(--dark-secondary);
+            --accent: var(--dark-accent);
+            --light: var(--dark-light);
+            --dark: var(--dark-dark);
+            --gray: var(--dark-gray);
+            --card-bg: var(--dark-card-bg);
+            --text-primary: var(--dark-text-primary);
+            --text-secondary: var(--dark-text-secondary);
+            --border-color: var(--dark-border-color);
+            --card-shadow: var(--dark-card-shadow);
+        }
+        
+        /* Theme Toggle Switch */
+        .theme-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+        }
+        
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-color);
+        }
+        
+        .toggle-container:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-icon {
+            font-size: 1.4rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        body.dark .toggle-icon {
+            color: var(--accent);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(180deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+        }
+        
+        .logo h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 5px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-weight: 500;
+            display: block;
+        }
+        
+        nav ul li a:hover,
+        nav ul li a.active {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        /* Main Content */
+        .page-header {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .main-content {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-title {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 18px 20px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+        }
+        
+        .sidebar-content {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+            width:100%;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .form-control {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition);
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 109, 119, 0.1);
+        }
+        
+        /* Button Styles */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 18px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .chat-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        
+        .chat-messages {
+            padding: 25px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        /* Message Styles */
+        .message {
+            margin-bottom: 20px;
+        }
+        
+        .message-bot {
+            display: flex;
+            justify-content: flex-start;
+        }
+        
+        .message-user {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .message-content {
+            max-width: 80%;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            line-height: 1.5;
+        }
+        
+        .bot-message {
+            background-color: rgba(131, 197, 190, 0.15);
+            border-left: 4px solid var(--primary);
+            color: var(--text-primary);
+        }
+        
+        .user-message {
+            background-color: rgba(0, 128, 128, 0.15);
+            border-right: 4px solid var(--primary);
+            color: var(--text-primary);
+        }
+        
+        /* Domain Question Styles */
+        .domain-question {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .question-header h4 {
+            margin: 0;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .progress-bar {
+            width: 150px;
+            height: 8px;
+            background-color: var(--gray);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            transition: width 0.3s ease;
+        }
+        
+        .question-text {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .domain-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .domain-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: var(--card-bg);
+        }
+        
+        .domain-option:hover {
+            background-color: rgba(131, 197, 190, 0.1);
+            border-color: var(--primary-light);
+        }
+        
+        .domain-option.selected {
+            background-color: rgba(0, 128, 128, 0.1);
+            border-color: var(--primary);
+        }
+        
+        .option-radio {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            margin-right: 15px;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .domain-option.selected .option-radio {
+            border-color: var(--primary);
+            background-color: var(--primary);
+        }
+        
+        .domain-option.selected .option-radio::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        
+        .option-text {
+            flex: 1;
+            color: var(--text-primary);
+        }
+        
+        /* Results Styles */
+        .domain-results {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .domain-results h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .results-summary {
+            margin-bottom: 30px;
+        }
+        
+        .score {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .performance {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .results-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-column p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Toast Container */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .toast {
+            min-width: 260px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            background: var(--card-bg);
+            box-shadow: var(--card-shadow);
+            border-left: 4px solid var(--primary);
+            animation: slideIn 0.25s ease;
+            font-size: 0.9rem;
+        }
+        
+        .toast.success { border-color: var(--success); }
+        .toast.error { border-color: var(--danger); }
+        
+        @keyframes slideIn {
+            from { transform: translateX(40px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li a {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .chat-messages {
+                padding: 15px;
+                max-height: 500px;
+            }
+            
+            .message-content {
+                max-width: 90%;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .question-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .progress-bar {
+                width: 100%;
+            }
+            
+            .results-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-user-tie"></i>
+                <h1>HireED</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="interview.html">Interview Prep</a></li>
+                    <li><a href="resume.html">Resume Builder</a></li>
+                    <li><a href="coding.html">Coding Practice</a></li>
+                    <li><a href="dsa.html">DSA Practice</a></li>
+                    <li><a href="debugging.html">Debugging</a></li>
+                    <li><a href="aptitude.html">Aptitude Tests</a></li>
+                    <li><a href="mocktest.html" class="active">Domain MCQs</a></li>
+                    <li><a href="chat-history.html">Chat History</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-graduation-cap"></i> Domain-Based MCQs</h1>
+            <p>Test your knowledge with 20 unique multiple-choice questions from your selected domain.</p>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="sidebar-title">
+                    <i class="fas fa-cog"></i>
+                    <span>Domain Settings</span>
+                </div>
+                
+                <div class="sidebar-content">
+                    <div class="form-group">
+                        <label for="domain-input">Enter Domain</label>
+                        <input type="text" id="domain-input" class="form-control" placeholder="e.g., Web Development, Machine Learning, Cloud Computing, DevOps, Cybersecurity, Database Design, etc." />
+                    </div>
+                    <button id="start-domain-mcq" class="btn btn-primary">
+                        <i class="fas fa-graduation-cap"></i> Start MCQ Test
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-header">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h2 id="chat-title">Domain MCQ Test</h2>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message message-bot">
+                        <div class="message-content bot-message">
+                            Enter a specific domain (e.g., Web Development, Machine Learning, Cloud Computing, DevOps, etc.) and click "Start MCQ Test" to begin. You'll be presented with 20 unique questions from that domain.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>HireED</h3>
+                    <p>Your AI-powered career preparation assistant helping you land your dream job.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="interview.html">Interview Preparation</a></li>
+                        <li><a href="resume.html">Resume Builder</a></li>
+                        <li><a href="coding.html">Coding Practice</a></li>
+                        <li><a href="dsa.html">DSA Practice</a></li>
+                        <li><a href="debugging.html">Debugging</a></li>
+                        <li><a href="aptitude.html">Aptitude Test</a></li>
+                         <li><a href="mocktest.html">Mock Test</a></li>
+                        <li><a href="analytics.html">Analytics</a></li>
+                        <li><a href="chat-history.html">Chat History</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:support@hired.com">support@hired.com</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 HireED. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="themeToggle">
+        <div class="toggle-container">
+            <i class="fas fa-adjust toggle-icon"></i>
+        </div>
+    </div>
+
+    <script src="context.js"></script>
+    <script>
+// Domain-Based MCQ JavaScript
+
+// Chat functionality
+const chatMessages = document.getElementById('chat-messages');
+const domainInput = document.getElementById('domain-input');
+const startDomainMCQBtn = document.getElementById('start-domain-mcq');
+
+const urlParams = new URLSearchParams(window.location.search);
+const urlStudentId = urlParams.get('studentId');
+const urlStudentName = urlParams.get('studentName');
+if (urlStudentId) localStorage.setItem('studentId', urlStudentId);
+if (urlStudentName) localStorage.setItem('studentName', urlStudentName);
+
+const CHAT_API_BASE = 'http://localhost:5001';
+const chatFeature = 'domain-mcq';
+const studentId = localStorage.getItem('studentId') || 'anonymous';
+const studentName = localStorage.getItem('studentName') || localStorage.getItem('userName') || '';
+const chatSessionKey = `hireed_${chatFeature}_session`;
+let chatSessionId = sessionStorage.getItem(chatSessionKey);
+if (!chatSessionId) {
+    chatSessionId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+    sessionStorage.setItem(chatSessionKey, chatSessionId);
+}
+
+// Toast functionality
+function showToast(message, type = "success") {
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.innerText = message;
+    container.appendChild(toast);
+
+    setTimeout(() => toast.remove(), 3000);
+}
+
+function stripHtml(html) {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.textContent || div.innerText || '';
+}
+
+function logChat(role, content, metadata = {}) {
+    const payload = {
+        studentId,
+        studentName,
+        feature: chatFeature,
+        role,
+        message: content,
+        message_text: stripHtml(content),
+        metadata,
+        sessionId: chatSessionId
+    };
+
+    fetch(`${CHAT_API_BASE}/log-chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    }).catch(() => {});
+}
+
+let domainMCQActive = false;
+let currentQuestionIndex = 0;
+let correctAnswers = 0;
+let totalQuestions = 20;
+let currentQuestions = [];
+let selectedAnswers = {};
+
+function addMessage(role, content) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message message-${role === 'user' ? 'user' : 'bot'}`;
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = `message-content ${role === 'user' ? 'user-message' : 'bot-message'}`;
+    contentDiv.innerHTML = content;
+
+    messageDiv.appendChild(contentDiv);
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    logChat(role, content);
+}
+
+async function callBackendAPI(endpoint, data) {
+    try {
+        const response = await fetch(`http://localhost:5001/${endpoint}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(`Error calling ${endpoint}:`, error);
+        addMessage('bot', `Error: ${error.message}`);
+        return null;
+    }
+}
+
+function showQuestion(questionIndex) {
+    if (questionIndex >= totalQuestions) {
+        showFinalResults();
+        return;
+    }
+
+    const question = currentQuestions[questionIndex];
+    const questionNumber = questionIndex + 1;
+
+    const questionHtml = `
+        <div class="domain-question">
+            <div class="question-header">
+                <h4>Question ${questionNumber} of ${totalQuestions}</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${(questionIndex / totalQuestions) * 100}%"></div>
+                </div>
+            </div>
+            <div class="question-text"><strong>${question.question}</strong></div>
+            <div class="domain-options">
+                ${Object.entries(question.options).map(([key, value]) => `
+                    <div class="domain-option" data-option="${key}">
+                        <div class="option-radio"></div>
+                        <span class="option-text">${value}</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+
+    addMessage('bot', questionHtml);
+
+    // Add click handlers for options
+    document.querySelectorAll('.domain-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const selectedKey = this.getAttribute('data-option');
+            
+            // Remove previous selection
+            document.querySelectorAll('.domain-option').forEach(o => o.classList.remove('selected'));
+            
+            // Mark selected
+            this.classList.add('selected');
+            selectedAnswers[questionIndex] = selectedKey;
+            
+            // Store and move to next question after a short delay
+            setTimeout(() => {
+                const correct = selectedKey === question.answer;
+                if (correct) {
+                    correctAnswers++;
+                }
+                
+                addMessage('bot', correct ? 
+                    `✅ <strong>Correct!</strong> ${question.explanation}` : 
+                    `❌ <strong>Incorrect.</strong> The correct answer is <strong>${question.answer.toUpperCase()}</strong>. ${question.explanation}`
+                );
+                
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    showQuestion(currentQuestionIndex);
+                }, 2000);
+            }, 500);
+        });
+    });
+}
+
+function showFinalResults() {
+    const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+    let performanceMessage = '';
+    let performanceEmoji = '';
+
+    if (percentage >= 90) {
+        performanceMessage = 'Outstanding! You have expert-level knowledge in this domain!';
+        performanceEmoji = '🏆';
+    } else if (percentage >= 80) {
+        performanceMessage = 'Great job! You have strong domain knowledge!';
+        performanceEmoji = '🎉';
+    } else if (percentage >= 70) {
+        performanceMessage = 'Good work! You have solid understanding of this domain.';
+        performanceEmoji = '👍';
+    } else if (percentage >= 60) {
+        performanceMessage = 'Not bad! You have a decent grasp of the basics. Keep practicing!';
+        performanceEmoji = '📚';
+    } else {
+        performanceMessage = 'Keep studying! More practice will help you master this domain.';
+        performanceEmoji = '💪';
+    }
+
+    const resultsHtml = `
+        <div class="domain-results">
+            <h3>Test Complete!</h3>
+            <div class="results-summary">
+                <div class="score">${performanceEmoji} Score: ${correctAnswers}/${totalQuestions} (${percentage}%)</div>
+                <div class="performance">${performanceMessage}</div>
+            </div>
+            <div class="results-actions">
+                <button id="restart-domain-test" class="btn btn-primary">Take Another Test</button>
+            </div>
+        </div>
+    `;
+
+    addMessage('bot', resultsHtml);
+
+    // Reset test state
+    domainMCQActive = false;
+    currentQuestionIndex = 0;
+    correctAnswers = 0;
+    currentQuestions = [];
+    selectedAnswers = {};
+
+    // Add restart button handler
+    setTimeout(() => {
+        const restartBtn = document.getElementById('restart-domain-test');
+        if (restartBtn) {
+            restartBtn.addEventListener('click', () => {
+                startDomainMCQBtn.disabled = false;
+                startDomainMCQBtn.click();
+            });
+        }
+    }, 100);
+
+    startDomainMCQBtn.disabled = false;
+}
+
+// Start Domain MCQ Test
+startDomainMCQBtn.addEventListener('click', async () => {
+    const domain = domainInput.value.trim();
+
+    if (!domain) {
+        showToast('Please enter a domain name to start the test.', 'error');
+        return;
+    }
+
+    if (domainMCQActive) {
+        showToast('Please finish the current test first.', 'error');
+        return;
+    }
+
+    domainMCQActive = true;
+    startDomainMCQBtn.disabled = true;
+    currentQuestionIndex = 0;
+    correctAnswers = 0;
+    selectedAnswers = {};
+
+    addMessage('bot', `Loading ${totalQuestions} unique questions for ${domain}...`);
+
+    // Get questions from backend
+    const response = await callBackendAPI('get-domain-mcq', {
+        domain: domain,
+        num_questions: totalQuestions
+    });
+
+    if (response && response.questions && response.questions.length === totalQuestions) {
+        currentQuestions = response.questions;
+        addMessage('bot', `Great! I've loaded ${totalQuestions} unique questions on ${domain}. Let's begin!`);
+        
+        setTimeout(() => {
+            showQuestion(0);
+        }, 1000);
+    } else {
+        addMessage('bot', `Failed to load questions for "${domain}". Please try another domain.`);
+        domainMCQActive = false;
+        startDomainMCQBtn.disabled = false;
+    }
+});
+
+// Theme Toggle Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('themeToggle');
+    
+    // Check for saved theme preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const savedTheme = localStorage.getItem('theme');
+    
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.body.classList.add('dark');
+    }
+    
+    // Toggle theme on click
+    themeToggle.addEventListener('click', function() {
+        const container = themeToggle.querySelector('.toggle-container');
+        const icon = themeToggle.querySelector('.toggle-icon');
+        
+        // Add animation class
+        container.classList.add('theme-changed');
+        
+        // Remove animation class after it completes
+        setTimeout(() => {
+            container.classList.remove('theme-changed');
+        }, 600);
+        
+        // Toggle theme
+        document.body.classList.toggle('dark');
+        const isDark = document.body.classList.contains('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        
+        // Change icon with rotation effect
+        if (isDark) {
+            icon.classList.replace('fa-sun', 'fa-adjust');
+            icon.classList.replace('fa-moon', 'fa-adjust');
+        }
+    });
+    
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (!localStorage.getItem('theme')) {
+            document.body.classList.toggle('dark', e.matches);
+        }
+    });
+});
+
+    </script>
+</body>
+</html>

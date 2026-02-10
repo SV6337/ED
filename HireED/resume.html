@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resume Builder - HireED</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <style>
+        :root {
+            /* Light Mode Colors */
+            --primary: #008080;
+            --primary-light: #83c5be;
+            --primary-dark: #004e5a;
+            --secondary: #3a506b;
+            --accent: #ff9e7d;
+            --light: #f8f9fa;
+            --dark: #2b2d42;
+            --gray: #e9ecef;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --card-bg: #ffffff;
+            --text-primary: #2b2d42;
+            --text-secondary: #4a4e69;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            
+            /* Dark Mode Colors */
+            --dark-primary: #008080;
+            --dark-primary-light: #006d77;
+            --dark-primary-dark: #004e5a;
+            --dark-secondary: #b8c2cc;
+            --dark-accent: #ff9e7d;
+            --dark-light: #121212;
+            --dark-dark: #e0e0e0;
+            --dark-gray: #1e1e1e;
+            --dark-card-bg: #1e1e1e;
+            --dark-text-primary: #e0e0e0;
+            --dark-text-secondary: #b8c2cc;
+            --dark-border-color: rgba(255, 255, 255, 0.08);
+            --dark-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            
+            --border-radius: 12px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        body.dark {
+            --primary: var(--dark-primary);
+            --primary-light: var(--dark-primary-light);
+            --primary-dark: var(--dark-primary-dark);
+            --secondary: var(--dark-secondary);
+            --accent: var(--dark-accent);
+            --light: var(--dark-light);
+            --dark: var(--dark-dark);
+            --gray: var(--dark-gray);
+            --card-bg: var(--dark-card-bg);
+            --text-primary: var(--dark-text-primary);
+            --text-secondary: var(--dark-text-secondary);
+            --border-color: var(--dark-border-color);
+            --card-shadow: var(--dark-card-shadow);
+        }
+        
+        /* Theme Toggle Switch */
+        .theme-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+        }
+        
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid var(--border-color);
+        }
+        
+        .toggle-container:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-icon {
+            font-size: 1.4rem;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+        
+        body.dark .toggle-icon {
+            color: var(--accent);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 18px 0;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo i {
+            font-size: 2.2rem;
+            color: white;
+        }
+        
+        .logo h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: white;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 5px;
+        }
+        
+        nav li a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.95rem;
+            display: block;
+        }
+        
+        nav li a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+        
+        nav li a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        /* Main Content */
+        main {
+            padding: 40px 0;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-header h1 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: none;
+        }
+        
+        .sidebar:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+        
+        .sidebar-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        /* Form Styles */
+       .form-group {
+    margin-bottom: 16px;      /* slightly tighter */
+    width: 100%;              /* 👈 ADD */
+}
+
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .form-control {
+    width: 100%;
+    box-sizing: border-box;      /* 👈 ADD THIS LINE */
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    transition: var(--transition);
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+}
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 109, 119, 0.1);
+        }
+        
+        /* Button Styles */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            width: 100%;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        /* Chat Container Styles */
+        .chat-container {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: fit-content;
+        }
+        
+        .chat-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+        
+        .chat-header {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .chat-messages {
+            padding: 20px;
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+        
+        .message-bot {
+            justify-content: flex-start;
+        }
+        
+        .message-content {
+            max-width: 85%;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            line-height: 1.5;
+        }
+        
+        .bot-message {
+            background-color: rgba(0, 128, 128, 0.1);
+            color: var(--text-primary);
+            border-left: 4px solid var(--primary);
+        }
+        
+        /* Footer Styles */
+        footer {
+            background-color: var(--card-bg);
+            padding: 40px 0 20px;
+            margin-top: 60px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .footer-column p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .toast {
+            min-width: 260px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            background: var(--card-bg);
+            box-shadow: var(--card-shadow);
+            border-left: 4px solid var(--primary);
+            animation: slideIn 0.25s ease;
+            font-size: 0.9rem;
+        }
+        
+        .toast.success { border-color: var(--success); }
+        .toast.error { border-color: var(--danger); }
+        
+        @keyframes slideIn {
+            from { transform: translateX(40px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .chat-messages {
+                min-height: 300px;
+                max-height: 400px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                width: 95%;
+            }
+            
+            nav ul {
+                gap: 3px;
+            }
+            
+            nav li a {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+            
+            .page-header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .page-header p {
+                font-size: 1rem;
+            }
+            
+            .sidebar, .chat-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-user-tie"></i>
+                <h1>HireED</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="interview.html">Interview Prep</a></li>
+                    <li><a href="resume.html" class="active">Resume Builder</a></li>
+                    <li><a href="coding.html">Coding Practice</a></li>
+                    <li><a href="dsa.html">DSA Practice</a></li>
+                    <li><a href="debugging.html">Debugging</a></li>
+                    <li><a href="aptitude.html">Aptitude Tests</a></li>
+                     <li><a href="mocktest.html">Mock Test</a></li>
+                    <li><a href="analytics.html">Analytics</a></li>
+                    <li><a href="chat-history.html">Chat History</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-file-alt"></i> Resume Builder</h1>
+            <p>Create professional resumes optimized for your desired job role.</p>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="sidebar-title">
+                    <i class="fas fa-cog"></i>
+                    <span>Resume Details</span>
+                </div>
+<section class="resume-builder">
+
+<h2>Create Professional Resume</h2>
+
+<div class="form-group">
+    <label>Full Name</label>
+    <input type="text" id="resume-name" class="form-control" placeholder="John Doe" />
+</div>
+
+<div class="form-group">
+    <label>Email Address</label>
+    <input type="email" id="resume-email" class="form-control" placeholder="john.doe@email.com" />
+</div>
+
+<div class="form-group">
+    <label>Phone Number</label>
+    <input type="tel" id="resume-phone" class="form-control" placeholder="+1 (123) 456-7890" />
+</div>
+
+<div class="form-group">
+    <label>Target Position</label>
+    <input type="text" id="resume-job-type" class="form-control" placeholder="Software Engineer" />
+</div>
+
+<div class="form-group">
+    <label>Professional Skills</label>
+    <input type="text" id="resume-skills" class="form-control"
+           placeholder="JavaScript, Project Management, Communication" />
+</div>
+
+<div class="form-group">
+    <label>Years of Experience</label>
+    <input type="number" id="resume-experience" class="form-control" placeholder="5" />
+</div>
+
+<div class="form-group">
+    <label>Professional Summary</label>
+    <textarea id="resume-summary" class="form-control"
+      placeholder="Brief introduction about your career goals and strengths"></textarea>
+</div>
+
+<div class="form-group">
+    <label>Work Experience</label>
+    <textarea id="resume-work" class="form-control"
+      placeholder="Company - Role - Achievements"></textarea>
+</div>
+
+<div class="form-group">
+    <label>Education</label>
+    <textarea id="resume-education" class="form-control"
+      placeholder="Degree - Institution - Year"></textarea>
+</div>
+
+
+
+</section>
+
+                <button id="generate-resume" class="btn">
+                    <i class="fas fa-file-alt"></i> Generate Resume
+                </button>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-header">
+                    <i class="fas fa-file-alt"></i>
+                    <h2>Resume Output</h2>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message message-bot">
+                        <div class="message-content bot-message">
+                            Fill in your details and click "Generate Resume" to create a professional resume tailored to your target job.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>HireED</h3>
+                    <p>Your AI-powered career preparation assistant helping you land your dream job.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="interview.html">Interview Preparation</a></li>
+                        <li><a href="resume.html">Resume Builder</a></li>
+                        <li><a href="coding.html">Coding Practice</a></li>
+                        <li><a href="debugging.html">Debugging</a></li>
+                        <li><a href="dsa.html">Data Structures & Algorithms</a></li>
+                        <li><a href="aptitude.html">Aptitude Tests</a></li>
+                        <li><a href="domain-mcq.html">Domain MCQs</a></li>
+                        <li><a href="chat-history.html">Chat History</a></li>
+
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:support@hired.com">support@hired.com</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 HireED. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <div class="toggle-container">
+            <i class="fas fa-adjust toggle-icon"></i>
+        </div>
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // Theme Toggle Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.querySelector('.theme-toggle');
+            const toggleIcon = document.querySelector('.toggle-icon');
+            
+            // Check for saved theme preference
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const savedTheme = localStorage.getItem('theme');
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.body.classList.add('dark');
+            }
+            
+            // Toggle theme on click
+            themeToggle.addEventListener('click', function() {
+                const container = themeToggle.querySelector('.toggle-container');
+                
+                // Add animation class
+                container.classList.add('theme-changed');
+                
+                // Remove animation class after it completes
+                setTimeout(() => {
+                    container.classList.remove('theme-changed');
+                }, 600);
+                
+                // Toggle theme
+                document.body.classList.toggle('dark');
+                const isDark = document.body.classList.contains('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                
+                // Change icon with rotation effect
+                if (isDark) {
+                    toggleIcon.classList.replace('fa-sun', 'fa-adjust');
+                    toggleIcon.classList.replace('fa-moon', 'fa-adjust');
+                }
+            });
+            
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                if (!localStorage.getItem('theme')) {
+                    document.body.classList.toggle('dark', e.matches);
+                }
+            });
+        });
+        
+        // Toast Notification Function
+        function showToast(message, type = "success") {
+            const container = document.getElementById("toastContainer");
+            const toast = document.createElement("div");
+            toast.className = `toast ${type}`;
+            toast.innerText = message;
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        // Generate Resume Button Event Listener (placeholder)
+        document.getElementById('generate-resume').addEventListener('click', function() {
+            // Get form values
+            const name = document.getElementById('resume-name').value;
+            const email = document.getElementById('resume-email').value;
+            const phone = document.getElementById('resume-phone').value;
+            const jobType = document.getElementById('resume-job-type').value;
+            const skills = document.getElementById('resume-skills').value;
+            const experience = document.getElementById('resume-experience').value;
+            
+            // Basic validation
+            if (!name || !email || !jobType || !skills) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Show loading/processing message
+            const chatMessages = document.getElementById('chat-messages');
+            const botMessage = document.createElement('div');
+            botMessage.className = 'message message-bot';
+            botMessage.innerHTML = `
+                <div class="message-content bot-message">
+                    <i class="fas fa-spinner fa-spin"></i> Generating resume for ${name}...
+                </div>
+            `;
+            chatMessages.appendChild(botMessage);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Simulate API call/processing
+            setTimeout(() => {
+                // Remove loading message
+                chatMessages.removeChild(botMessage);
+                
+                // Add success message
+                const successMessage = document.createElement('div');
+                successMessage.className = 'message message-bot';
+                successMessage.innerHTML = `
+                    <div class="message-content bot-message">
+                        <strong>Resume Generated Successfully!</strong><br><br>
+                        <strong>Name:</strong> ${name}<br>
+                        <strong>Target Job:</strong> ${jobType}<br>
+                        <strong>Experience:</strong> ${experience} years<br>
+                        <strong>Key Skills:</strong> ${skills}<br><br>
+                        Your professional resume has been created. You can download it or further customize the sections.
+                    </div>
+                `;
+                chatMessages.appendChild(successMessage);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                showToast('Resume generated successfully!');
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

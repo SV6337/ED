@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EDVANTAGE | Admin Signup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  
+  <style>
+  :root {
+    --primary: #008080;
+    --primary-dark: #004e5a;
+    --accent: #ff9e7d;
+    --danger: #e74c3c;
+    --light: #f4f4f4;
+    --dark: #2b2d42;
+    --gray: #e9ecef;
+    --card-bg: #ffffff;
+    --text-primary: #2b2d42;
+    --text-secondary: #4a4e69;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    --gradient-bg: linear-gradient(to bottom, var(--primary), var(--primary-dark));
+  }
+
+  body.dark {
+    --primary: #008080;
+    --primary-dark: #004e5a;
+    --accent: #ff9e7d;
+    --danger: #e74c3c;
+    --light: #121212;
+    --dark: #e0e0e0;
+    --gray: #1e1e1e;
+    --card-bg: #1e1e1e;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b8c2cc;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    --gradient-bg: linear-gradient(to bottom, #004e5a, #002a33);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  body {
+    background: var(--gradient-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: var(--text-primary);
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .signup-container {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 40px 35px;
+    box-shadow: var(--card-shadow);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .signup-container img {
+    width: 100px;
+    margin-bottom: 10px;
+  }
+
+  .tagline {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 25px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .signup-container h2 {
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  input {
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    transition: all 0.3s ease-in-out;
+  }
+
+  input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 128, 128, 0.15);
+  }
+
+  button {
+    padding: 12px;
+    background-color: var(--primary);
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-top: 10px;
+  }
+
+  button:hover {
+    background-color: var(--primary-dark);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .switch-mode {
+    margin-top: 15px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .switch-mode a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .dark-mode-toggle {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+
+  .error-message {
+    color: var(--danger);
+    font-size: 13px;
+    margin-top: 10px;
+    min-height: 20px;
+  }
+
+  /* Tablet and small laptop screens */
+@media (max-width: 768px) {
+  .signup-container {
+    padding: 25px 20px;
+    max-width: 90%;
+    margin: 20px auto;
+  }
+
+  .signup-container h2 {
+    font-size: 20px;
+  }
+
+  input,
+  select,
+  button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .tagline {
+    font-size: 13px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .signup-container {
+    padding: 20px 15px;
+  }
+
+  .signup-container h2 {
+    font-size: 18px;
+  }
+
+  input,
+  select,
+  button {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  .tagline {
+    font-size: 12px;
+  }
+}
+
+
+</style>
+
+</head>
+<body>
+  <div class="signup-container">
+    <img src="Your_paragraph_text-removebg-preview.png" alt="EDVANTAGE Logo" />
+    <div class="tagline">Empowering Tomorrow's Minds — Today.</div>
+    <h2>Admin Signup</h2>
+
+    <form id="signupForm">
+      <input type="text" id="username" placeholder="Create Username" required />
+      <input type="email" id="email" placeholder="Email Address" required />
+      <input type="password" id="password" placeholder="Create Password" required />
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+      <button type="submit">Create Account</button>
+      <div id="error-message" class="error-message"></div>
+    </form>
+
+    <div class="switch-mode">
+      Already have an account? <a href="index.html">Login</a>
+    </div>
+
+    <div class="dark-mode-toggle" onclick="toggleDarkMode()">
+      🌗 Toggle Dark Mode
+    </div>
+  </div>
+
+  <script>
+      const BASE_URL = 'http://localhost:5000';
+
+    function toggleDarkMode() {
+  document.body.classList.toggle('dark');
+  localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark');
+  }
+});
+
+
+    document.getElementById('signupForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const confirmPassword = document.getElementById('confirmPassword').value.trim();
+      const errorMessage = document.getElementById('error-message');
+      
+      errorMessage.textContent = '';
+
+      // Validation
+      if (!username || !email || !password || !confirmPassword) {
+        errorMessage.textContent = 'Please fill in all fields.';
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        errorMessage.textContent = 'Passwords do not match.';
+        return;
+      }
+
+      if (password.length < 6) {
+        errorMessage.textContent = 'Password must be at least 6 characters.';
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:5000/register-admin', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username,
+            email,
+            password
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Registration failed');
+        }
+
+        // Store admin ID and redirect
+        localStorage.setItem('adminId', data._id);
+        window.location.href = 'admin_dashboard.html';
+        
+      } catch (error) {
+        console.error('Signup error:', error);
+        errorMessage.textContent = error.message || 'Registration failed. Please try again.';
+      }
+    });
+
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+  </script>
+</body>
+</html>
