@@ -1,5 +1,7 @@
 // --- Updated script.js with ALL Fixes (Separate Question & Speech Resume) ---
 
+const API_BASE_URL = "http://65.0.105.4:5001";
+
 // Tab switching functionality
 document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
@@ -117,7 +119,7 @@ if(match){
 
 async function callBackendAPI(endpoint, data) {
     try {
-        const response = await fetch(`http://localhost:5001/${endpoint}`, {
+        const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
