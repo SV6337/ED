@@ -201,6 +201,12 @@
   <script>
     const BASE_URL = 'http://65.0.105.4:5000'; // Updated to EC2 public IP
 
+    // Ensure all API calls use the correct base URL
+    // Example usage:
+    // fetch(`${BASE_URL}/api-endpoint`, { method: 'GET' })
+    //   .then(response => response.json())
+    //   .then(data => console.log(data));
+
     function toggleDarkMode() {
       document.body.classList.toggle('dark');
       localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');

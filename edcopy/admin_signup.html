@@ -232,7 +232,7 @@
   </div>
 
   <script>
-      const BASE_URL = 'http://localhost:5000';
+      const BASE_URL = 'http://65.0.105.4:5000'; // Updated to EC2 public IP
 
     function toggleDarkMode() {
   document.body.classList.toggle('dark');
@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        const response = await fetch('http://localhost:5000/register-admin', {
+        const response = await fetch(`${BASE_URL}/register-admin`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

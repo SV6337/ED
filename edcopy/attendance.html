@@ -879,7 +879,7 @@
     </div>
     
     <script>
-        const BASE_URL = 'http://localhost:5000';
+        const BASE_URL = 'http://65.0.105.4:5000'; // Updated to EC2 public IP
         
         // Toast Notification Function
         function showToast(message, type = "success") {
@@ -990,7 +990,7 @@
                     return;
                 }
                 
-                const response = await fetch(`http://localhost:5000/teacher-classes/${teacherId}`);
+                const response = await fetch(`${BASE_URL}/teacher-classes/${teacherId}`);
                 if (!response.ok) throw new Error('Failed to load classes');
                 teacherClasses = await response.json();
                 
@@ -1059,7 +1059,7 @@
                 
                 // Fetch attendance data for each student in this subject
                 const studentsWithAttendance = await Promise.all(students.map(async (student) => {
-                    const attendanceResponse = await fetch(`http://localhost:5000/attendance/student/${student._id}/subject/${currentClass.subject._id}`);
+                    const attendanceResponse = await fetch(`${BASE_URL}/attendance/student/${student._id}/subject/${currentClass.subject._id}`);
                     const attendanceData = await attendanceResponse.json();
                     
                     const total = attendanceData.total || 0;
@@ -1179,7 +1179,7 @@
                 });
                 
                 // Send to bulk attendance endpoint
-                const response = await fetch('http://localhost:5000/attendance-bulk', {
+                const response = await fetch(`${BASE_URL}/attendance-bulk`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(updates)
@@ -1246,7 +1246,7 @@
                         `${attendanceDate}T${attendanceTime}` : 
                         attendanceDate;
                     
-                    const response = await fetch('http://localhost:5000/attendance', {
+                    const response = await fetch(`${BASE_URL}/attendance`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
@@ -1296,14 +1296,14 @@
         
         // Export functions
         function exportAsPDF() {
-            window.open('http://localhost:5000/download-attendance', '_blank');
+            window.open(`${BASE_URL}/download-attendance`, '_blank');
             showToast('Exporting as PDF...', "info");
         }
         
         function exportAsExcel() {
-            window.open('http://localhost:5000/attendance/export/excel', '_blank');
+            window.open(`${BASE_URL}/attendance/export/excel`, '_blank');
             showToast('Exporting as Excel...', "info");
         }
     </script>
 </body>
-</html> 
+</html>

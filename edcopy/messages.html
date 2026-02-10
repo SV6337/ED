@@ -599,7 +599,13 @@
     /* ===============================
        CONFIG
     =============================== */
-    const BASE_URL = 'http://localhost:5000';
+    const BASE_URL = 'http://65.0.105.4:5000'; // Updated to EC2 public IP
+
+    // Ensure all API calls use the correct base URL
+    // Example usage:
+    // fetch(`${BASE_URL}/api-endpoint`, { method: 'GET' })
+    //   .then(response => response.json())
+    //   .then(data => console.log(data));
     
     /* ===============================
        LOAD ALL STUDENTS
