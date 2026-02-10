@@ -22,6 +22,9 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Serve static files from the HireED directory
+app.use('/HireED', express.static(path.join(__dirname, '../HireED')));
+
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/edvantage';
 mongoose.connect(MONGO_URI);
