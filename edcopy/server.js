@@ -28,8 +28,8 @@ app.get('/', (req, res) => {
 app.use('/HireED', express.static(path.join(__dirname, '../HireED')));
 
 // Start the HireED backend (app.py)
-const hireedProcess = spawn('python3', ['../HireED/app.py'], {
-    cwd: __dirname, // Set the working directory to edcopy
+const hireedProcess = spawn('gunicorn', ['-w', '4', '-b', '0.0.0.0:5001', 'app:app'], {
+    cwd: path.join(__dirname, '../HireED'),
     shell: true
 });
 
