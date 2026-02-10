@@ -22,7 +22,7 @@ print(f"Loaded MONGO_URI: {MONGO_URI}")
 # Initialize MongoDB Atlas connection
 mongo_client = MongoClient(MONGO_URI) if MONGO_URI else None
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='.', static_url_path='/HireED')
 CORS(app)  # Enable CORS for all routes
 
 # ---------------- MongoDB Atlas (Chat Logs) ----------------
@@ -850,7 +850,7 @@ def get_domain_mcq():
 
 @app.route('/')
 def home():
-    return app.send_static_file('index.html')
+    return app.send_static_file('HireED/index.html')
 
 
 if __name__ == '__main__':
