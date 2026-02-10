@@ -23,8 +23,7 @@ print(f"Loaded MONGO_URI: {MONGO_URI}")
 mongo_client = MongoClient(MONGO_URI) if MONGO_URI else None
 
 app = Flask(__name__)
-# ✅ Allow only your front-end origin to avoid multiple-value CORS errors
-CORS(app)
+CORS(app)  # Enable CORS for all routes
 
 # ---------------- MongoDB Atlas (Chat Logs) ----------------
 # MongoDB Atlas connection
