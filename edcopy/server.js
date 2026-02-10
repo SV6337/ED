@@ -1799,9 +1799,11 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 app.use(
     '/api/hireed',
     createProxyMiddleware({
-        target: 'http://localhost:5001',
+        target: 'http://localhost:5001', // HireED backend
         changeOrigin: true,
-        pathRewrite: { '^/api/hireed': '' },
+        pathRewrite: {
+            '^/api/hireed': '', // Remove '/api/hireed' prefix when forwarding
+        },
     })
 );
 
