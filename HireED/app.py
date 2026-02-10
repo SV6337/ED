@@ -23,7 +23,7 @@ print(f"Loaded MONGO_URI: {MONGO_URI}")
 mongo_client = MongoClient(MONGO_URI) if MONGO_URI else None
 
 # Ensure the app serves static files correctly
-app = Flask(__name__, static_folder='.', static_url_path='')
+app = Flask(__name__, static_folder='HireED', static_url_path='/')
 CORS(app)  # Enable CORS for all routes
 
 # ---------------- MongoDB Atlas (Chat Logs) ----------------

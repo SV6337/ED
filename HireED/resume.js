@@ -4,7 +4,7 @@
 const chatMessages = document.getElementById('chat-messages');
 const generateResumeBtn = document.getElementById('generate-resume');
 
-const CHAT_API_BASE = 'http://localhost:5001';
+const CHAT_API_BASE = "http://<your-ec2-public-ip>:5001"; // Replace <your-ec2-public-ip> with the actual public IP of your EC2 instance.
 const chatFeature = 'resume';
 const studentId = localStorage.getItem('studentId') || 'anonymous';
 const studentName = localStorage.getItem('studentName') || localStorage.getItem('userName') || '';
