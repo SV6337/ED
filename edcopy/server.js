@@ -7,6 +7,8 @@ const fs = require('fs');
 const PDFDocument = require('pdfkit');
 const ExcelJS = require('exceljs');
 require('dotenv').config();
+const { spawn } = require('child_process');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -24,6 +26,41 @@ app.get('/', (req, res) => {
 
 // Serve static files from the HireED directory
 app.use('/HireED', express.static(path.join(__dirname, '../HireED')));
+
+// Start the HireED backend (app.py)
+const hireedProcess = spawn('python3', ['../HireED/app.py'], {
+    cwd: __dirname, // Set the working directory to edcopy
+    shell: true
+});
+
+hireedProcess.stdout.on('data', (data) => {
+    console.log(`[HireED]: ${data}`);
+});
+
+hireedProcess.stderr.on('data', (data) => {
+    console.error(`[HireED ERROR]: ${data}`);
+});
+
+hireedProcess.on('close', (code) => {
+    console.log(`[HireED] process exited with code ${code}`);
+});
+
+// Ensure app.py is terminated when the Node.js server stops
+process.on('exit', () => {
+    hireedProcess.kill();
+});
+
+// Proxy API requests to the HireED backend
+app.use(
+    '/api/hireed',
+    createProxyMiddleware({
+        target: 'http://localhost:5001', // HireED backend
+        changeOrigin: true,
+        pathRewrite: {
+            '^/api/hireed': '', // Remove '/api/hireed' prefix when forwarding
+        },
+    })
+);
 
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/edvantage';
