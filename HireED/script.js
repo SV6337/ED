@@ -1,6 +1,6 @@
 // --- Updated script.js with ALL Fixes (Separate Question & Speech Resume) ---
 
-const API_BASE_URL = "http://65.0.105.4:5001";
+const API_BASE_URL = "http://<your-ec2-public-ip>:5001"; // Replace <your-ec2-public-ip> with the actual public IP of your EC2 instance.
 
 // Tab switching functionality
 document.querySelectorAll('.tab').forEach(tab => {
